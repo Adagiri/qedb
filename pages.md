@@ -28,10 +28,7 @@
 - role ['user', 'admin', 'moderator']
 - high score
 
-# Authentication page
 
-- login with email or password
-- signup with email, password and username
 
 # contribute
 

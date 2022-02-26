@@ -16,7 +16,7 @@ const httpClient = (url, options = {}) => {
 };
 
 const dataProvider = jsonServerProvider(
-  `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1`,
+  `${process.env.NEXT_PUBLIC_BACKEND_API_URL}`,
   httpClient
 );
 
@@ -31,6 +31,7 @@ const myDataProvider = {
     if (resource === 'questions') {
       console.log(params.data);
       let image = params.data.image;
+      const _id = ObjectID();
 
       if (image) {
         const file = image.rawFile;
@@ -40,12 +41,13 @@ const myDataProvider = {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+            Authorization:
+              'Bearer ' + JSON.parse(localStorage.getItem('token')),
           },
           params: {
             resource: `questions`,
             fileType: file.type,
-            key: ObjectID(),
+            key: _id.toString(),
           },
         });
         // Update the file
@@ -77,6 +79,7 @@ const myDataProvider = {
         ...params,
         data: {
           ...params.data,
+          _id,
           image,
         },
       });
@@ -142,7 +145,8 @@ const myDataProvider = {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+            Authorization:
+              'Bearer ' + JSON.parse(localStorage.getItem('token')),
           },
           params: {
             resource: `questions`,
@@ -186,7 +190,8 @@ const myDataProvider = {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+            Authorization:
+              'Bearer ' + JSON.parse(localStorage.getItem('token')),
           },
           params: {
             resource: `categories`,

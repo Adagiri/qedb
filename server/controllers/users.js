@@ -147,6 +147,7 @@ module.exports.getSignedUrl = asyncHandler(async (req, res, next) => {
   let key = '';
 
   if (req.query.resource === 'questions') {
+    console.log(req.query.key)
     fileKey = `questions/${req.query.key}.${fileType.slice(6)}`;
   }
 
