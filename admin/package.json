@@ -1,0 +1,27 @@
+{
+  "name": "learn-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p 4000"
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "bson-objectid": "^2.0.2",
+    "date-fns": "^2.28.0",
+    "firebase": "^7.24.0",
+    "next": "^11.0.0",
+    "ra-data-json-server": "^3.19.0",
+    "ra-data-simple-rest": "^3.19.0",
+    "ra-input-rich-text": "^3.19.6",
+    "randomstring": "^1.2.2",
+    "react": "17.0.2",
+    "react-admin": "^3.19.0",
+    "react-admin-firebase": "^3.2.24",
+    "react-dom": "17.0.2",
+    "recharts": "^2.1.9",
+    "unique-random": "^3.0.0"
+  }
+}
