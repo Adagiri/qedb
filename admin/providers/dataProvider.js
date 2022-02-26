@@ -16,7 +16,7 @@ const httpClient = (url, options = {}) => {
 };
 
 const dataProvider = jsonServerProvider(
-  'http://localhost:9000/api/v1',
+  `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1`,
   httpClient
 );
 
