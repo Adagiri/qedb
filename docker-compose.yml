@@ -35,19 +35,7 @@ services:
   qedb_server:
     image: qedb-server:latest
     container_name: 'qedb_server'
-    environment:
-      - NODE_ENV=production
-      - PORT=9000
-      - NODE_ENV=development
-      - MONGO_URI=mongodb+srv://krowdee:Krowdee477@qdb-krowdee.qt3cr.mongodb.net/edufunda
-      - AWS_ACCESS_KEY=AKIAXB2ZI6H727Q2Z66I
-      - AWS_SECRET_KEY=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
-      - S3_FILEUPLOAD_BUCKET=adagiri-test-bucket
-      - SMS_HANDLER=aws_sns
-      - JWT_SECRET=edu910239funda939302idsk
-      - JWT_COOKIE_EXPIRE=30
-      - JWT_EXPIRE=90d
-      - CLIENT_URL=https://qedb.net
+    # environment:
     # depends_on:
       # - gyanmail_api
     networks:
