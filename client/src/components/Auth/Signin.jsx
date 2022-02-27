@@ -1,17 +1,21 @@
 import * as React from 'react';
+import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import { Link as MuiLink } from '@mui/material';
+import Link from 'next/link';
+import { useAlert } from 'react-alert';
+import { useRouter } from 'next/router';
 
 function Copyright(props) {
   return (
@@ -22,8 +26,8 @@ function Copyright(props) {
       {...props}
     >
       {'Copyright © '}
-      <Link color='inherit' href='https://mui.com/'>
-        Your Website
+      <Link color='inherit' href='https://qedb.net'>
+        Qedb
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -34,14 +38,45 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const [loading, setLoading] = React.useState(false);
+  const alert = useAlert();
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    try {
+      setLoading(true);
+
+      const login = await axios({
+        method: 'post',
+        url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/login`,
+
+        data: {
+          email: data.get('email'),
+          password: data.get('password'),
+        },
+
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      setLoading(false);
+      if (login.status === 200) {
+        const data = login.data;
+        localStorage.setItem('token', JSON.stringify(data.token));
+        localStorage.setItem('user', JSON.stringify(data.user));
+        router.push('/');
+      }
+    } catch (error) {
+      setLoading(false);
+      const errorMessage =
+        error.response?.data?.error || 'Something went wrong';
+
+      alert.error(errorMessage);
+    }
   };
 
   return (
@@ -62,16 +97,12 @@ export default function SignIn() {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin='normal'
               required
               fullWidth
+              type={'email'}
               id='email'
               label='Email Address'
               name='email'
@@ -88,27 +119,30 @@ export default function SignIn() {
               id='password'
               autoComplete='current-password'
             />
-            <FormControlLabel
-              control={<Checkbox value='remember' color='primary' />}
-              label='Remember me'
-            />
-            <Button
+
+            <LoadingButton
               type='submit'
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
+              loading={loading}
             >
               Sign In
-            </Button>
+            </LoadingButton>
             <Grid container>
               <Grid item xs>
-                <Link href='#' variant='body2'>
-                  Forgot password?
+                <Link passHref href='/forgot-password'>
+                  <MuiLink sx={{ cursor: 'pointer' }} variant='body2'>
+                    Forgot password?
+                  </MuiLink>
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='#' variant='body2'>
-                  {"Don't have an account? Sign Up"}
+                <Link passHref href='/signup'>
+                  <MuiLink sx={{ cursor: 'pointer' }} variant='body2'>
+                    Don&apos;t have an account? Sign Up
+                  </MuiLink>
                 </Link>
               </Grid>
             </Grid>

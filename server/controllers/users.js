@@ -72,7 +72,7 @@ module.exports.signup = asyncHandler(async (req, res, next) => {
   const token = crypto.randomBytes(30).toString('hex');
   req.body.verifyEmailToken = token;
 
-  const user = await User.create(req.body);
+  await User.create(req.body);
   const message = `Please click the link below to verify your qedb account: \n\n ${process.env.CLIENT_URL}/verify-email/${token}`;
   await sendEmail(
     createEmailParam(req.body.email, 'Verify your email', message)
@@ -111,11 +111,10 @@ module.exports.verifyEmail = asyncHandler(async (req, res, next) => {
 });
 
 module.exports.login = asyncHandler(async (req, res, next) => {
-
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new ErrorResponse('Please provide an email and password', 400));
+    return next(new ErrorResponse(400, 'Please provide an email and password'));
   }
 
   const user = await User.findOne({ email, isVerified: true }).select(
@@ -137,7 +136,7 @@ module.exports.login = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     token,
-    user
+    user,
   });
 });
 
@@ -147,7 +146,7 @@ module.exports.getSignedUrl = asyncHandler(async (req, res, next) => {
   let key = '';
 
   if (req.query.resource === 'questions') {
-    console.log(req.query.key)
+    console.log(req.query.key);
     fileKey = `questions/${req.query.key}.${fileType.slice(6)}`;
   }
 
@@ -197,4 +196,74 @@ module.exports.getSignedUrl = asyncHandler(async (req, res, next) => {
       key,
     },
   });
+});
+
+// @desc      Forgot password
+// @route     POST /api/v1/auth/forgotpassword
+// @access    Public
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new ErrorResponse(404, 'There is no user with that email'));
+  }
+
+  // Get reset token
+  const resetToken = user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  // Create reset url
+  const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+
+  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+  try {
+    await sendEmail(
+      createEmailParam(user.email, 'Reset password link', message)
+    );
+
+    res.status(200).json({ success: true, data: 'Email sent' });
+  } catch (err) {
+    console.log(err);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return next(new ErrorResponse(500, 'Email could not be sent'));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
+
+// @desc      Reset password
+// @route     PUT /api/v1/auth/resetpassword/:resettoken
+// @access    Public
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  // Get hashed token
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new ErrorResponse(400, 'Invalid token'));
+  }
+
+  // Set new password
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+
+  res.status(200).json({ success: true });
 });

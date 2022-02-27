@@ -49,13 +49,11 @@ export default function SignIn() {
     try {
       setLoading(true);
 
-      const signup = await axios({
+      const login = await axios({
         method: 'post',
-        url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/forgot-password`,
         data: {
-          username: data.get('username'),
           email: data.get('email'),
-          password: data.get('password'),
         },
         headers: {
           'Content-Type': 'application/json',
@@ -63,15 +61,15 @@ export default function SignIn() {
       });
 
       setLoading(false);
-      if (signup.status === 201) {
- 
+
+      if (login.status === 200) {
         router.push('/');
-        alert.success('Verification link has been sent to your email');
       }
     } catch (error) {
       setLoading(false);
-      console.log(error)
-      const errorMessage = error.response?.data?.error || 'Something went wrong';
+      const errorMessage =
+        error.response?.data?.error || 'Something went wrong';
+
       alert.error(errorMessage);
     }
   };
@@ -92,40 +90,25 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Sign up
+            Forgot Password ?
+          </Typography>
+          <Typography mt={3} component='p'>
+            Enter your email and hit send, we will send you a reset password
+            link
           </Typography>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin='normal'
               required
               fullWidth
-              type='text'
-              id='username'
-              label='Username'
-              name='username'
-              autoComplete='username'
-              autoFocus
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              type='email'
+              type={'email'}
               id='email'
               label='Email Address'
               name='email'
               autoComplete='email'
+              autoFocus
             />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              name='password'
-              label='Password'
-              type='password'
-              id='password'
-              autoComplete='current-password'
-            />
+
             <LoadingButton
               type='submit'
               fullWidth
@@ -134,13 +117,20 @@ export default function SignIn() {
               disabled={loading}
               loading={loading}
             >
-              Sign Up
+              Send Mail
             </LoadingButton>
-            <Grid container justifyContent='flex-end'>
-              <Grid item>
+            <Grid container>
+              <Grid item xs>
                 <Link passHref href='/signin'>
                   <MuiLink sx={{ cursor: 'pointer' }} variant='body2'>
-                    Already have an account? Sign in
+                    Sign In
+                  </MuiLink>
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link passHref href='/signup'>
+                  <MuiLink sx={{ cursor: 'pointer' }} variant='body2'>
+                    Sign Up
                   </MuiLink>
                 </Link>
               </Grid>

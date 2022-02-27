@@ -45,16 +45,20 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const token = window.location.pathname.slice(16);
+
+    if (data.get('password') !== data.get('confirm-password')) {
+      alert.error('Password does not match');
+      return;
+    }
 
     try {
       setLoading(true);
 
-      const signup = await axios({
+      const resetPassword = await axios({
         method: 'post',
-        url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/reset-password/${token}`,
         data: {
-          username: data.get('username'),
-          email: data.get('email'),
           password: data.get('password'),
         },
         headers: {
@@ -63,15 +67,15 @@ export default function SignIn() {
       });
 
       setLoading(false);
-      if (signup.status === 201) {
- 
-        router.push('/');
-        alert.success('Verification link has been sent to your email');
+
+      if (resetPassword.status === 200) {
+        router.push('/signin');
       }
     } catch (error) {
       setLoading(false);
-      console.log(error)
-      const errorMessage = error.response?.data?.error || 'Something went wrong';
+      const errorMessage =
+        error.response?.data?.error || 'Something went wrong';
+
       alert.error(errorMessage);
     }
   };
@@ -92,30 +96,12 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Sign up
+            Reset Password ?
+          </Typography>
+          <Typography mt={1} component='p'>
+            Enter a secure password and hit Reset
           </Typography>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              type='text'
-              id='username'
-              label='Username'
-              name='username'
-              autoComplete='username'
-              autoFocus
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              type='email'
-              id='email'
-              label='Email Address'
-              name='email'
-              autoComplete='email'
-            />
             <TextField
               margin='normal'
               required
@@ -124,8 +110,21 @@ export default function SignIn() {
               label='Password'
               type='password'
               id='password'
-              autoComplete='current-password'
+              autoComplete='new-password'
+              autoFocus
             />
+
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              name='confirm-password'
+              label='Confirm Password'
+              type='password'
+              id='confirm-password'
+              autoComplete='confirm-password'
+            />
+
             <LoadingButton
               type='submit'
               fullWidth
@@ -134,13 +133,20 @@ export default function SignIn() {
               disabled={loading}
               loading={loading}
             >
-              Sign Up
+              Reset Password
             </LoadingButton>
-            <Grid container justifyContent='flex-end'>
-              <Grid item>
+            <Grid container>
+              <Grid item xs>
                 <Link passHref href='/signin'>
                   <MuiLink sx={{ cursor: 'pointer' }} variant='body2'>
-                    Already have an account? Sign in
+                    Sign In
+                  </MuiLink>
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link passHref href='/signup'>
+                  <MuiLink sx={{ cursor: 'pointer' }} variant='body2'>
+                    Sign Up
                   </MuiLink>
                 </Link>
               </Grid>

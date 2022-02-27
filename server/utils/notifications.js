@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const { default: axios } = require('axios');
 
 const emailReplyToAddress = 'no-reply@krowdee.com';
-const emailSource = 'Krowdee <mathduels1@gmail.com>';
+const emailSource = 'Qedb <support@krowdee.com>';
 
 const sns = new AWS.SNS({
   region: 'us-east-1',

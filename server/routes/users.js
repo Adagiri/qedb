@@ -9,6 +9,8 @@ const {
   getLoggedInUser,
   updateUser,
   getSignedUrl,
+  resetPassword,
+  forgotPassword,
 } = require('../controllers/users');
 
 const { protect, authorize } = require('../middlewares/auth');
@@ -23,6 +25,8 @@ router
   .get(protect, authorize('Moderator', 'Admin'), advancedResult(User, 'User'), getUsers)
   .post(signup);
 router.post('/verify-email/:token', verifyEmail);
+router.post('/reset-password/:token', resetPassword);
+router.post('/forgot-password', forgotPassword);
 router.post('/login', login);
 
 router.put('/:userId', protect, authorize( 'Admin'), updateUser);
