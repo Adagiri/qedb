@@ -117,10 +117,11 @@ module.exports.login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(400, 'Please provide an email and password'));
   }
 
-  const user = await User.findOne({ email, isVerified: true }).select(
-    '+password'
-  );
-
+  const user = await User.findOne({
+    email: 'ibrahimridwan47@gmail.com',
+    isVerified: true,
+  }).select('+password');
+  console.log(user);
   if (!user) {
     return next(new ErrorResponse(401, 'Invalid credentials'));
   }

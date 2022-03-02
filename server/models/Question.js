@@ -30,6 +30,11 @@ const QuestionSchema = new mongoose.Schema({
     required: true,
   },
 
+  explanation: {
+    type: String,
+    maxlength: [800, 'Explanation must not exceed 800 characters'],
+  },
+
   answer: {
     type: String,
     required: [true, 'Please add an answer'],

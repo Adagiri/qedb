@@ -21,7 +21,7 @@ import {
   Create,
   minLength,
 } from 'react-admin';
-import randomString from 'randomstring';
+import RichTextInput from 'ra-input-rich-text';
 // import { Edit, SimpleForm, SelectInput, FormDataConsumer } from 'react-admin';
 
 const getOptions = (array, type) => {
@@ -75,7 +75,8 @@ const validateOptions = (value, allValues) => {
   return undefined;
 };
 
-const validateText = [required(), minLength(3), maxLength(80)];
+const validateText = [required(), minLength(3), maxLength(100)];
+const validateExplanation = [maxLength(800)];
 const validateOption = [required(), minLength(1), maxLength(20)];
 const validateAnswer = [required(), answerValidation];
 
@@ -188,6 +189,15 @@ export const QuestionCreate = (props) => {
               />
             </SimpleFormIterator>
           </ArrayInput>
+        </FormTab>
+
+        <FormTab label='Explanation'>
+          {/* Explanation */}
+          <RichTextInput
+            label='Explanation'
+            validate={validateExplanation}
+            source='explanation'
+          />
         </FormTab>
       </TabbedForm>
     </Create>

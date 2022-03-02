@@ -4,10 +4,10 @@ const ErrorResponse = require('../utils/errorResponse');
 
 const advancedResults = (model, resourceName) => async (req, res, next) => {
   let query;
-  console.log(query);
   if (req.query.limit && req.query.limit > 50) {
     return next(new ErrorResponse(400, 'Limit must not exceed 50'));
   }
+  console.log(req.query);
 
   // Copy req.query
   const reqQuery = { ...req.query };
@@ -39,7 +39,7 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
   // Text search for results
   queryStr = JSON.parse(queryStr);
 
-  queryStr.id && (queryStr._id = mongoose.Types.ObjectId(queryStr.id));
+  queryStr.id && (queryStr._id = queryStr.id);
   queryStr['author.id'] &&
     (queryStr['author.id'] = mongoose.Types.ObjectId(queryStr['author.id']));
   delete queryStr.id;
@@ -62,7 +62,6 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
       delete queryStr[query];
     }
   });
-  console.log('queryStr', queryStr);
 
   // Search on all fields for users' collesction
   if (resourceName === 'User') {
@@ -72,6 +71,10 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
         { username: { $regex: queryStr.q, $options: 'i' } },
       ]);
   }
+
+  queryStr.id && (queryStr._id = queryStr.id);
+
+  console.log('queryStr', queryStr);;
 
   // Finding resource
   query = model.find(queryStr);
