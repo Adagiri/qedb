@@ -1,5 +1,5 @@
 import Contribute from '../../components/Contribute';
 
-export default function () {
+export default function ContributePage () {
   return <Contribute />;
 }
