@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Link as MuiLink } from '@mui/material';
+import { Button, Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
 import { useAlert } from 'react-alert';
 import { useRouter } from 'next/router';
@@ -91,13 +91,14 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
-          </Avatar>
-          <Typography component='h1' variant='h5'>
+          </Avatar> */}
+          <img src='qedb-colored.svg' />
+          <Typography component='p' fontSize={'.9rem'} variant='h5'>
             Sign in
           </Typography>
-          <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Box component='form' onSubmit={handleSubmit}>
             <TextField
               margin='normal'
               required
@@ -124,9 +125,10 @@ export default function SignIn() {
               type='submit'
               fullWidth
               variant='contained'
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: '#449788' }}
               disabled={loading}
               loading={loading}
+              color='primary'
             >
               Sign In
             </LoadingButton>

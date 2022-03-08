@@ -2,3 +2,4 @@
 */.next/
 *config.env
 */.env.local
+*/package-lock.json

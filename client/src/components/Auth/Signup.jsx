@@ -64,14 +64,14 @@ export default function SignIn() {
 
       setLoading(false);
       if (signup.status === 201) {
- 
         router.push('/');
         alert.success('Verification link has been sent to your email');
       }
     } catch (error) {
       setLoading(false);
-      console.log(error)
-      const errorMessage = error.response?.data?.error || 'Something went wrong';
+      console.log(error);
+      const errorMessage =
+        error.response?.data?.error || 'Something went wrong';
       alert.error(errorMessage);
     }
   };
@@ -88,10 +88,13 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
-          </Avatar>
-          <Typography component='h1' variant='h5'>
+          </Avatar> */}
+
+          <img src='qedb-colored.svg' />
+
+          <Typography fontSize={'.9rem'} component='h1' variant='h5'>
             Sign up
           </Typography>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -130,9 +133,10 @@ export default function SignIn() {
               type='submit'
               fullWidth
               variant='contained'
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: '#449788' }}
               disabled={loading}
               loading={loading}
+              color='primary'
             >
               Sign Up
             </LoadingButton>

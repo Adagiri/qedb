@@ -1,6 +1,3 @@
-# Website Develop
-
-1. Authentication page
-
-- login with email or password
-- signup with email, password and username
+if the path matches the page been mapped, style it
+i.e path = "contribute", style contribute button
+but if path = "/"
