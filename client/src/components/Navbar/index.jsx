@@ -109,10 +109,11 @@ const Navbar = () => {
                       <MuiLink
                         sx={{
                           cursor: 'pointer',
-                          // textDecorationLine: 'none',
+                          textDecorationLine: 'none',
                           textTransform: 'capitalize',
-                        marginTop: 0,
-                        marginBottom: 0
+                          marginTop: 0,
+                          marginBottom: 0,
+                          color: "#000"
                         }}
                         variant='body2'
                       >
@@ -206,9 +207,15 @@ const Navbar = () => {
                         m: 1,
                         bgcolor: 'secondary.main',
                         color: 'primary.main',
+                        width: 24,
+                        height: 24,
+                        fontSize: ".8rem",
+                        fontWeight: "600"
                       }}
                       alt={user.username}
-                    />
+                    >
+                      {user.username[0]}
+                    </Avatar>
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -245,11 +252,17 @@ const Navbar = () => {
                 </Menu>{' '}
               </>
             ) : (
-              <IconButton size='large' color='primary' sx={{ p: 0 }}>
+              <IconButton size='small' color='primary' sx={{ p: 0 }}>
                 <Link href='/signin'>
-                  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LoginIcon color='primary' />
-                  </Avatar>
+                  <Avatar
+                    sx={{
+                      m: 1,
+                      bgcolor: 'secondary.main',
+                      color: 'primary.main',
+                      width: 24,
+                      height: 24,
+                    }}
+                  />
                 </Link>
               </IconButton>
             )}
