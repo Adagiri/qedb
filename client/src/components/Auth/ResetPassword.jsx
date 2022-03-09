@@ -16,6 +16,7 @@ import { Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
 import { useAlert } from 'react-alert';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 function Copyright(props) {
   return (
@@ -92,11 +93,18 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component='h1' variant='h5'>
-            Reset Password ?
+          <Image
+            src='https://qedb.s3.amazonaws.com/qedb-colored.svg'
+            width='70px'
+            height='50px'
+          />
+          <Typography
+            component='p'
+            fontWeight={'600'}
+            fontSize={'.9rem'}
+            variant='h5'
+          >
+          Reset password
           </Typography>
           <Typography mt={1} component='p'>
             Enter a secure password and hit Reset

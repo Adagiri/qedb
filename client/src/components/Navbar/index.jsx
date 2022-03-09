@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link as MuiLink } from '@mui/material';
 import { Zoom } from '@mui/material';
 import Link from 'next/link';
+import Image from 'next/image';
 import LoginIcon from '@mui/icons-material/Login';
 
 const pages = ['api', 'contribute', 'practice'];
@@ -67,7 +68,11 @@ const Navbar = () => {
                 }}
                 variant='body2'
               >
-                <img src='qedb.svg' />
+                <Image
+                  src='https://qedb.s3.amazonaws.com/qedb.svg'
+                  width='50px'
+                  height='50px'
+                />
               </MuiLink>
             </Link>
           </Typography>
@@ -113,7 +118,7 @@ const Navbar = () => {
                           textTransform: 'capitalize',
                           marginTop: 0,
                           marginBottom: 0,
-                          color: "#000"
+                          color: '#000',
                         }}
                         variant='body2'
                       >
@@ -138,7 +143,11 @@ const Navbar = () => {
                 }}
                 variant='body2'
               >
-                <img src='qedb.svg' />
+                <Image
+                  src='https://qedb.s3.amazonaws.com/qedb.svg'
+                  width='50px'
+                  height='50px'
+                />
               </MuiLink>
             </Link>
           </Typography>
@@ -209,8 +218,8 @@ const Navbar = () => {
                         color: 'primary.main',
                         width: 24,
                         height: 24,
-                        fontSize: ".8rem",
-                        fontWeight: "600"
+                        fontSize: '.8rem',
+                        fontWeight: '600',
                       }}
                       alt={user.username}
                     >
