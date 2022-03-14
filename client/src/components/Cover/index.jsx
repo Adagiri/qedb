@@ -28,7 +28,7 @@ const Cover = ({ children }) => {
         justifyContent: 'center',
         height: '100vh',
         overflow: 'hidden',
-        // width: '100vw',
+        width: '100vw',
       }}
     >
       <Box
@@ -38,22 +38,22 @@ const Cover = ({ children }) => {
           backgroundSize: 'cover',
           height: '100vh',
           minWidth: '50vw',
-          width: '50%',
-          // color: '#f5f5f5',
+          width: '50vw',
           display: { xs: 'none', md: 'flex' },
         }}
       ></Box>
       <Box
         sx={{
-          backgroundColo: '#EBEBEB',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
+          flexGrow: 1,
+          height: "100vh",
           minWidth: '50%',
         }}
       >
         <Navbar />
-        <Box sx={{ padding: '2rem', overflow: 'auto' }}>{children}</Box>
+        <Box sx={{overflow: 'auto', flexGrow: 1 }}>{children}</Box>
       </Box>
     </Box>
   );

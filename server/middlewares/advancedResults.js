@@ -7,10 +7,13 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
   if (req.query.limit && req.query.limit > 50) {
     return next(new ErrorResponse(400, 'Limit must not exceed 50'));
   }
-  console.log(req.query);
+
 
   // Copy req.query
   const reqQuery = { ...req.query };
+
+  console.log('query', req.query);
+
 
   // Fields to exclude
   const removeFields = [
@@ -38,6 +41,15 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
 
   // Text search for results
   queryStr = JSON.parse(queryStr);
+
+  // Transform query
+
+  for (const key in queryStr) {
+    queryStr[key] = { $in: queryStr[key].split(',') };
+  }
+
+  console.log('queryStr', queryStr);
+
 
   queryStr.id && (queryStr._id = queryStr.id);
   queryStr['author.id'] &&
@@ -74,7 +86,6 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
 
   queryStr.id && (queryStr._id = queryStr.id);
 
-  console.log('queryStr', queryStr);;
 
   // Finding resource
   query = model.find(queryStr);
