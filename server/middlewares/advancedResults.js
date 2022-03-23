@@ -8,12 +8,10 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
     return next(new ErrorResponse(400, 'Limit must not exceed 50'));
   }
 
-
   // Copy req.query
   const reqQuery = { ...req.query };
 
   console.log('query', req.query);
-
 
   // Fields to exclude
   const removeFields = [
@@ -44,12 +42,18 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
 
   // Transform query
 
+  const dateFields = [
+    'createdAt.$gt',
+    'createdAt.$gte',
+    'createdAt.$lt',
+    'createdAt.$lte',
+  ];
+
   for (const key in queryStr) {
-    queryStr[key] = { $in: queryStr[key].split(',') };
+    if (!dateFields.find((field) => field === key)) {
+      queryStr[key] = { $in: queryStr[key].split(',') };
+    }
   }
-
-  console.log('queryStr', queryStr);
-
 
   queryStr.id && (queryStr._id = queryStr.id);
   queryStr['author.id'] &&
@@ -57,12 +61,8 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
   delete queryStr.id;
 
   // Transform query for date comparism
-  [
-    'createdAt.$gt',
-    'createdAt.$gte',
-    'createdAt.$lt',
-    'createdAt.$lte',
-  ].forEach((query) => {
+  dateFields.forEach((query) => {
+    console.log('query', query);
     if (queryStr[query]) {
       queryStr['$expr'] = {
         [query.split('.')[1]]: [
@@ -85,7 +85,6 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
   }
 
   queryStr.id && (queryStr._id = queryStr.id);
-
 
   // Finding resource
   query = model.find(queryStr);
