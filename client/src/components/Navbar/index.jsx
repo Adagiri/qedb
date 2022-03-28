@@ -244,9 +244,8 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <Link href={setting === 'logout' ? '#' : `/${setting}`}>
+                    <Link key={setting} href={setting === 'logout' ? '#' : `/${setting}`}>
                       <MenuItem
-                        key={setting}
                         onClick={() => {
                           if (setting === 'logout') {
                             localStorage.removeItem('user');
