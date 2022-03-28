@@ -58,15 +58,12 @@ export default function ContentCard(props) {
     setQuestion(props);
   };
 
-  const handleDoubleClick = () => {
-    console.log('Clicked twice');
-  };
+
 
   return (
     <>
       <Card
         className={classes.root}
-        onDoubleClick={handleDoubleClick}
         onClick={handleClick}
       >
         <Box className={classes.contentBox}>
