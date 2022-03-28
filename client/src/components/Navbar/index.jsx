@@ -244,19 +244,21 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem
-                      key={setting}
-                      onClick={() => {
-                        if (setting === 'logout') {
-                          localStorage.removeItem('user');
-                          localStorage.removeItem('token');
-                          setUser({});
-                        }
-                        handleCloseUserMenu();
-                      }}
-                    >
-                      <Typography textAlign='center'>{setting}</Typography>
-                    </MenuItem>
+                    <Link href={setting === 'logout' ? '#' : `/${setting}`}>
+                      <MenuItem
+                        key={setting}
+                        onClick={() => {
+                          if (setting === 'logout') {
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('token');
+                            setUser({});
+                          }
+                          handleCloseUserMenu();
+                        }}
+                      >
+                        <Typography textAlign='center'>{setting}</Typography>
+                      </MenuItem>
+                    </Link>
                   ))}
                 </Menu>{' '}
               </>

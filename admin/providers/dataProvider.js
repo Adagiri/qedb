@@ -2,6 +2,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import { fetchUtils } from 'react-admin';
 import axios from 'axios';
 import ObjectID from 'bson-objectid';
+import imageCompression from 'browser-image-compression';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -34,7 +35,16 @@ const myDataProvider = {
       const _id = ObjectID();
 
       if (image) {
-        const file = image.rawFile;
+        let file = image.rawFile;
+        
+        const options = {
+          maxSizeMB: 0.1,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+
+        file = await imageCompression(file, options);
+        console.log(file)
         // Get signed url
         const urlResponse = await axios({
           url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/get-signed-url`,
@@ -138,7 +148,16 @@ const myDataProvider = {
 
       if (image && typeof image !== 'string' && typeof image !== null) {
         console.log(params);
-        const file = image.rawFile;
+        let file = image.rawFile;
+        
+        const options = {
+          maxSizeMB: 0.1,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+
+        file = await imageCompression(file, options);
+        console.log(file)
         // Get signed url
         const urlResponse = await axios({
           url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/get-signed-url`,
@@ -183,7 +202,16 @@ const myDataProvider = {
 
       if (typeof image !== 'string' && typeof image !== null) {
         console.log(params);
-        const file = image.rawFile;
+        let file = image.rawFile;
+        
+        const options = {
+          maxSizeMB: 0.1,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+
+        file = await imageCompression(file, options);
+        console.log(file)
         // Get signed url
         const urlResponse = await axios({
           url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/get-signed-url`,

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Cover from '../Cover';
 import Navbar from '../Navbar';
 import ContentCard from './ContentCard';
+import ContentModal from './ContentModal';
 
 export default function Contribute() {
   const [query, setQuery] = useState('');
@@ -27,6 +28,14 @@ export default function Contribute() {
     console.log(contentData);
   };
 
+  const handleClick = () => {
+    console.log('Clicked once');
+  };
+
+  const handleDoubleClick = () => {
+    console.log('Clicked twice');
+  };
+
   return (
     <Box>
       <Navbar />
@@ -36,6 +45,7 @@ export default function Contribute() {
           <ContentCard key={cont.id} {...cont} />
         ))}
       </Box>
+      {/* <ContentModal /> */}
     </Box>
   );
 }

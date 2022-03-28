@@ -63,11 +63,20 @@ export default function HomeComponent() {
   };
 
   const getCategories = async () => {
+    const categoriesFromStorage = JSON.parse(
+      localStorage.getItem('categories')
+    );
+    if (categoriesFromStorage) {
+      setCategories(categoriesFromStorage.map((elem) => elem.name));
+    }
+
     const categories = await axios.get(
       `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/categories`
     );
-    localStorage.setItem('categories', JSON.stringify(categories.data));
-    setCategories(categories.data.map((catz) => catz.name));
+    if (categories.data) {
+      localStorage.setItem('categories', JSON.stringify(categories.data));
+      setCategories(categories.data.map((catz) => catz.name));
+    }
   };
 
   const handleCategoryChange = (event) => {

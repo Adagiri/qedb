@@ -51,13 +51,20 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
 
   for (const key in queryStr) {
     if (!dateFields.find((field) => field === key)) {
-      queryStr[key] = { $in: queryStr[key].split(',') };
+      console.log('queryStr before', queryStr);
+      queryStr[key] = {
+        $in:
+          typeof queryStr[key] === 'object'
+            ? queryStr[key]
+            : queryStr[key].split(','),
+      };
+      console.log('queryStr after', queryStr);
     }
   }
 
   queryStr.id && (queryStr._id = queryStr.id);
   queryStr['author.id'] &&
-    (queryStr['author.id'] = mongoose.Types.ObjectId(queryStr['author.id']));
+    (queryStr['author.id'] = [mongoose.Types.ObjectId(queryStr['author.id'][0])]);
   delete queryStr.id;
 
   // Transform query for date comparism
@@ -122,6 +129,8 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
 
   try {
     let results = await query;
+    console.log('after results');
+
     // If resource been handled is Question, Transform each question category field from ids to readable names
     if (resourceName === 'Question') {
       const categories = await cache.get('categories');

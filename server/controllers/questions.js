@@ -138,7 +138,7 @@ module.exports.addQuestion = asyncHandler(async (req, res, next) => {
 
   user.hasPosts = true;
   user.qposted = user.qposted + 1;
-  user.qpending = user.qpending + 1;
+  user.qapproved = user.qapproved + 1;
 
   await user.save();
   question.id = question._id;
