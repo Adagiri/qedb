@@ -96,38 +96,6 @@ export default function Contribute() {
       <Navbar />
       {/* {content.length && <Box width={'100%'}>{JSON.stringify(content)}</Box>} */}
 
-      <Box
-        style={{ position: 'absolute', zIndex: -500, top: '-3000px' }}
-        mt={8}
-        id='selected-questions'
-      >
-        {selected.map((question, index) => {
-          return (
-            <Box m={3} mb={6}>
-              <Typography
-                component='p'
-                letterSpacing='.1px'
-                fontSize={'15px'}
-                mb={1}
-              >
-                {index + 1}.&nbsp;&nbsp; {question.text}
-              </Typography>
-              {question.options.map((option, index) => (
-                <Typography
-                  fontSize={'15px'}
-                  letterSpacing='.2px'
-                  component='p'
-                  m={0.5}
-                  ml={3}
-                >
-                  {['a', 'b', 'c', 'd', 'e'][index]}. {option} &nbsp;&nbsp;
-                </Typography>
-              ))}
-            </Box>
-          );
-        })}
-      </Box>
-
       <Box p={2}>
         {content.map((cont) => (
           <ContentCard
