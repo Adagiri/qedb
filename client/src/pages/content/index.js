@@ -1,7 +1,9 @@
-import Content from '../../components/Content';
+import dynamic from 'next/dynamic';
 
-export default function ContentPage () {
+const Content = dynamic(() => import('../../components/Content'), {
+  ssr: false,
+});
+
+export default function ContentPage() {
   return <Content />;
 }
-
-

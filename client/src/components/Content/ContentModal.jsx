@@ -55,14 +55,19 @@ export default function ContentModal(props) {
             </Typography>
             <Typography
               id='transition-modal-description'
-              sx={{ mt: 2, mb:2 }}
+              sx={{ mt: 2, mb: 2 }}
               component='p'
             >
               {question.text}
             </Typography>
 
             {question.image && (
-                <Image src={question.image} height="300px" width="300px" objectFit='cover'  />
+              <Image
+                src={question.image}
+                height='200px'
+                width='300px'
+                objectFit='cover'
+              />
             )}
             <Box
               variant='contained'
