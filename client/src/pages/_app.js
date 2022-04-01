@@ -9,6 +9,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { Fab, Zoom } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 import Head from 'next/head';
 
 // optional configuration
@@ -30,6 +31,10 @@ const theme = createTheme({
     },
     secondary: {
       main: '#FFFBFB',
+    },
+    shader: {
+      main: '#93CBC1',
+      dark: '#93CBd8',
     },
     error: {
       main: '#EA4134',
@@ -89,7 +94,7 @@ function MyApp(props) {
           rel='stylesheet'
         />
       </Head>
-      <AlertProvider template={AlertTemplate} {...options}>
+      <SnackbarProvider maxSnack={3}>
         <ThemeProvider theme={theme}>
           <Toolbar id='back-to-top-anchor' sx={{ position: 'absolute' }} />
           <Component {...pageProps} />
@@ -100,7 +105,7 @@ function MyApp(props) {
             </Fab>
           </ScrollTop>
         </ThemeProvider>
-      </AlertProvider>
+      </SnackbarProvider>
     </>
   );
 }

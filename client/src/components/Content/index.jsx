@@ -9,39 +9,22 @@ import Fab from '@mui/material/Fab';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 // import Pdf from 'react-to-pdf';
-import { Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import SaveQuestionsModal from './SaveQuestionsModal';
+import MainLoader from '../Loader/MainLoader';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const optionTexts = ['a', 'b', 'c', 'd', 'e'];
-
-// var docDefinition = {
-//   content: [
-//     // if you don't need styles, you can use a simple string to define a paragraph
-//     'This is a standard paragraph, using default style',
-
-//     // using a { text: '...' } object lets you set styling properties
-//     { text: 'This paragraph will have a bigger font', fontSize: 15 },
-
-//     // if you set the value of text to an array instead of a string, you'll be able
-//     // to style any part individually
-//     {
-//       text: [
-//         'This paragraph is defined as an array of elements to make it possible to ',
-//         'This paragraph is defined as an array of elements to make it possible to ',
-//         { text: 'restyle part of it and make it bigger ', fontSize: 15 },
-//         'than the rest.',
-//       ],
-//     },
-//   ],
-// };
+const optionTexts = ['a', 'b', 'c', 'd', 'e', 'f'];
 
 export default function Contribute() {
   const [query, setQuery] = useState('');
   const [content, setContent] = useState([]);
+  const [loader, setLoader] = useState(true);
   const [selected, setSelected] = useState([]);
+  const [addQuestionModal, setAddQuestionModal] = useState(false);
 
   const docDefinition = {
     pageMargins: [15, 40, 15, 40],
@@ -79,33 +62,38 @@ export default function Contribute() {
     fetchContent();
   }, []);
 
-  // console.log('selected', selected);
-
   const fetchContent = async () => {
-    // console.log('query', query);
+    try {
+      const contentData = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/questions${window.location.search}`
+      );
 
-    const contentData = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/questions${window.location.search}`
-    );
-
-    setContent(contentData.data);
+      setContent(contentData.data);
+      setLoader(false);
+    } catch (error) {
+      console.log(error);
+      setLoader(false);
+    }
   };
 
   return (
     <Box>
       <Navbar />
       {/* {content.length && <Box width={'100%'}>{JSON.stringify(content)}</Box>} */}
-
-      <Box p={2}>
-        {content.map((cont) => (
-          <ContentCard
-            selected={selected}
-            setSelected={setSelected}
-            key={cont.id}
-            content={cont}
-          />
-        ))}
-      </Box>
+      {loader ? (
+        <MainLoader loader={loader} />
+      ) : (
+        <Box p={2}>
+          {content.map((cont) => (
+            <ContentCard
+              selected={selected}
+              setSelected={setSelected}
+              key={cont.id}
+              content={cont}
+            />
+          ))}
+        </Box>
+      )}
       {/* <ContentModal /> */}
 
       {selected.length > 0 && (
@@ -116,36 +104,36 @@ export default function Contribute() {
             flexDirection: 'column',
             position: 'fixed',
             bottom: '40px',
-            left: '40px',
+            left: '60px',
             width: '20px',
-            zIndex: '4000',
+            zIndex: '5',
           }}
         >
-          <Fab color='primary' size='small' aria-label='add'>
+          <Fab
+            color='error'
+            onClick={() => setAddQuestionModal(true)}
+            size='medium'
+            aria-label='add'
+          >
             <LibraryAddIcon />
           </Fab>
           <Fab
             onClick={() => pdfMake.createPdf(docDefinition).download()}
             color='primary'
-            size='small'
-            aria-label='edit'
+            size='medium'
+            aria-label='download'
           >
             <DownloadForOfflineIcon />
           </Fab>
-
-          {/* <Pdf targetRef={ref} filename='code-example.pdf'>
-            {({ toPdf }) => (
-              <Fab
-                onClick={toPdf}
-                color='primary'
-                size='small'
-                aria-label='edit'
-              >
-                <DownloadForOfflineIcon />
-              </Fab>
-            )}
-          </Pdf> */}
         </Box>
+      )}
+
+      {addQuestionModal && (
+        <SaveQuestionsModal
+          addQuestionModal={addQuestionModal}
+          setAddQuestionModal={setAddQuestionModal}
+          selected={selected}
+        />
       )}
     </Box>
   );

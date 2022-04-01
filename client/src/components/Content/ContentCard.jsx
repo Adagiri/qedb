@@ -78,9 +78,9 @@ onchecking, remove the id from the list, oncheck, at the id again
     <>
       <Card className={classes.root}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-          <Checkbox disableRipple  onClick={handleCheck} size='small' {...label} />
+          <Checkbox disableRipple disableTouchRipple disableFocusRipple  onClick={handleCheck} size='small' {...label} />
           <Box onClick={handleClick} className={classes.contentBox}>
-            <CardContent sx={{ flex: '1 0 auto' }}>
+            <CardContent sx={{ flex: '1 0 auto' , width: "100%"}}>
               <Typography noWrap={true} component='p' variant='p'>
                 {text}
               </Typography>

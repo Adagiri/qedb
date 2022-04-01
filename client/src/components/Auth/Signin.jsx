@@ -14,8 +14,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Button, Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
-import { useAlert } from 'react-alert';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
 import Image from 'next/image';
 
 function Copyright(props) {
@@ -40,7 +41,7 @@ const theme = createTheme();
 
 export default function SignIn() {
   const [loading, setLoading] = React.useState(false);
-  const alert = useAlert();
+  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   const handleSubmit = async (event) => {
@@ -76,7 +77,7 @@ export default function SignIn() {
       const errorMessage =
         error.response?.data?.error || 'Something went wrong';
 
-      alert.error(errorMessage);
+      enqueueSnackbar(errorMessage, {variant: "error"});
     }
   };
 

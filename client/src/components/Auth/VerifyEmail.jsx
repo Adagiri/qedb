@@ -12,8 +12,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
-import { useAlert } from 'react-alert';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
 
 const theme = createTheme();
 
@@ -23,7 +24,7 @@ export default function VerifyEmail() {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState('');
   const [error, setError] = React.useState('');
-  const alert = useAlert();
+  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   React.useEffect(() => {
@@ -53,7 +54,7 @@ export default function VerifyEmail() {
         error.response?.data?.error || 'Something went wrong';
       setError(errorMessage);
 
-      alert.error(errorMessage);
+      enqueueSnackbar(errorMessage, {variant: "error"});
     }
   };
 

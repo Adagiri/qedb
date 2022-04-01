@@ -1,11 +1,5 @@
 1. Client tasks
 
-# Questions page
-
-- select questions
-- filter questions
-- modal for adding selected questions to saved tests or create new tests
-
 # Contribute
 
 - submit questions
@@ -24,5 +18,3 @@
 # Api
 
 - opentdb api page alike
-
-# Practice

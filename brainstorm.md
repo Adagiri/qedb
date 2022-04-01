@@ -1,8 +1,13 @@
-- select questions
-1. fix ui and select places for the
+- add question to saved library or new library
 
+  on clicking the add button,
+  a modal pops up showing list of the saved libraries which he can add to
+  there is also a a button for create a new library, which when clicked opens another modal ( has name input & create button )
 
-_ i am trying to make the pdf show more than one page
-_ we can call the pdf save twice
-_ we can divide the image into bits
+- libraries
+  [ [], [] ]
+// Edit library
+// Create library
 
+- setup alert
+alert shows up

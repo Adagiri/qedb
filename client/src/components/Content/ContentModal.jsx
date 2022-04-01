@@ -41,6 +41,7 @@ export default function ContentModal(props) {
           timeout: 500,
         }}
         onBackdropClick={handleClose}
+        sx={{zIndex: 10}}
       >
         <Fade in={open}>
           <Box sx={style}>

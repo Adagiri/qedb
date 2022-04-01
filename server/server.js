@@ -23,6 +23,7 @@ const users = require('./routes/users');
 const questions = require('./routes/questions');
 const categories = require('./routes/categories');
 const tokens = require('./routes/tokens');
+const libraries = require('./routes/libraries');
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use('/api/v1/users', users);
 app.use('/api/v1/questions', questions);
 app.use('/api/v1/categories', categories);
 app.use('/api/v1/tokens', tokens);
+app.use('/api/v1/libraries', libraries);
 
 app.use(errorHandler);
 

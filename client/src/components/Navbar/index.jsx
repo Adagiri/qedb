@@ -12,7 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link as MuiLink } from '@mui/material';
+import { Alert, Link as MuiLink } from '@mui/material';
 import { Zoom } from '@mui/material';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -244,7 +244,10 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <Link key={setting} href={setting === 'logout' ? '#' : `/${setting}`}>
+                    <Link
+                      key={setting}
+                      href={setting === 'logout' ? '#' : `/${setting}`}
+                    >
                       <MenuItem
                         onClick={() => {
                           if (setting === 'logout') {
