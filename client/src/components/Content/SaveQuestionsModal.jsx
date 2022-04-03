@@ -175,14 +175,17 @@ export default function SaveQuestionsModal(props) {
         },
       });
 
-      console.log(contentData);
+      console.log('contentData',contentData);
       setContent(contentData.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
+       const errorMessage =  error.response?.data?.error || 'Something went wrong';
+
+         enqueueSnackbar(errorMessage, { variant: 'error' });
+
       enqueueSnackbar('Failed', { variant: 'error' });
 
-      console.log(error);
     }
   };
 

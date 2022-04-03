@@ -15,16 +15,22 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import SaveQuestionsModal from './SaveQuestionsModal';
 import MainLoader from '../Loader/MainLoader';
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const optionTexts = ['a', 'b', 'c', 'd', 'e', 'f'];
 
 export default function Contribute() {
   const [query, setQuery] = useState('');
+  const [user, setUser] = useState({});
   const [content, setContent] = useState([]);
   const [loader, setLoader] = useState(true);
   const [selected, setSelected] = useState([]);
   const [addQuestionModal, setAddQuestionModal] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const docDefinition = {
     pageMargins: [15, 40, 15, 40],
@@ -57,6 +63,13 @@ export default function Contribute() {
   });
 
   useEffect(() => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (token && user) {
+      setUser(user);
+    }
+
     setQuery(window.location.search);
 
     fetchContent();
@@ -111,7 +124,17 @@ export default function Contribute() {
         >
           <Fab
             color='error'
-            onClick={() => setAddQuestionModal(true)}
+            onClick={() => {
+              if (Object.keys(user).length === 0) {
+                enqueueSnackbar('Please login to add library', {
+                  variant: 'error',
+                });
+
+                router.push('/signin');
+              } else {
+                setAddQuestionModal(true);
+              }
+            }}
             size='medium'
             aria-label='add'
           >
