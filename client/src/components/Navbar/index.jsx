@@ -34,9 +34,17 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const pages = ['api', 'contribute', 'practice'];
-const pagesIcon = [<DeveloperModeIcon />, <ShareIcon />, <GamesIcon />];
+const pagesIcon = [
+  <DeveloperModeIcon key='1' />,
+  <ShareIcon key='2' />,
+  <GamesIcon key='3' />,
+];
 const settings = ['profile', 'dashboard', 'logout'];
-const settingsIcon = [<AccountCircleIcon />, <DashboardIcon />, <LogoutIcon />];
+const settingsIcon = [
+  <AccountCircleIcon key='1' />,
+  <DashboardIcon key='2' />,
+  <LogoutIcon key='3' />,
+];
 
 const Navbar = () => {
   const [currentPath, setCurrentPath] = React.useState('');
@@ -293,6 +301,7 @@ function NavDrawer({ navDrawer, setNavDrawer, toggleDrawer, user, setUser }) {
       <List>
         {pages.map((text, index) => (
           <Link
+            key={text}
             passHref
             href={text === 'home' ? '/' : `/${text.toLowerCase()}`}
           >
@@ -321,6 +330,7 @@ function NavDrawer({ navDrawer, setNavDrawer, toggleDrawer, user, setUser }) {
         ) : (
           settings.map((text, index) => (
             <Link
+              key={text}
               passHref
               href={text === 'logout' ? '/' : `/${text.toLowerCase()}`}
             >
