@@ -317,7 +317,7 @@ function NavDrawer({ navDrawer, setNavDrawer, toggleDrawer, user, setUser }) {
       <Divider />
       <List>
         {Object.keys(user).length === 0 ? (
-          <Link passHref href='/login'>
+          <Link passHref href='/signin'>
             <a style={{ textDecoration: 'none', color: 'inherit' }}>
               <ListItem button>
                 <ListItemIcon>

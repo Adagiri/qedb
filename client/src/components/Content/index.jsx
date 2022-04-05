@@ -126,11 +126,11 @@ export default function Contribute() {
             color='error'
             onClick={() => {
               if (Object.keys(user).length === 0) {
+                router.push('/signin');
+
                 enqueueSnackbar('Please login to add library', {
                   variant: 'error',
                 });
-
-                router.push('/signin');
               } else {
                 setAddQuestionModal(true);
               }
