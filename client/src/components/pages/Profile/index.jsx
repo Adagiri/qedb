@@ -2,8 +2,8 @@ import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Cover from '../Cover';
-import Navbar from '../Navbar';
+import Cover from '../../Cover';
+import Navbar from '../../Navbar';
 import ContentCard from './id';
 
 export default function Contribute() {

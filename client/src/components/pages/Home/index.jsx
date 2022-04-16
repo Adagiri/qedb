@@ -1,18 +1,18 @@
-import { Badge, Box, Button, Grid, Paper, Typography } from '@mui/material';
-import Cover from '../Cover';
-import Navbar from '../Navbar';
+import { useState, useEffect } from 'react';
 
-import * as React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
-import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
-import MailIcon from '@mui/icons-material/Mail';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+
+import Cover from '../../Cover';
+
 
 const ITEM_HEIGHT = 40;
 const ITEM_PADDING_TOP = 10;
@@ -30,12 +30,12 @@ const LEVELS = ['Easy', 'Medium', 'Hard'];
 
 export default function HomeComponent() {
   const router = useRouter();
-  const [categories, setCategories] = React.useState([]);
-  const [category, setCategory] = React.useState([]);
-  const [type, setType] = React.useState([]);
-  const [level, setLevel] = React.useState([]);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [type, setType] = useState([]);
+  const [level, setLevel] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Get Categories
     getCategories();
   }, []);
@@ -96,7 +96,6 @@ export default function HomeComponent() {
       target: { value },
     } = event;
 
-    console.log(value);
     setType(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
@@ -160,18 +159,6 @@ export default function HomeComponent() {
               <Typography variant='P' color='primary.dark' component='P'>
                 a plartform to fetch enough resources for your project.
               </Typography>
-              {/* 
-              <Paper elevation={5}>
-                <Box width={"80%"} p={2} mt={3} fontSize=".9rem" fontWeight={"600"} display='flex' justifyContent={'space-around'}>
-                  <Typography variant='p' color='primary.dark' component='p'>
-                    3500 Questions
-                  </Typography>
-
-                  <Typography variant='p' textAlign={"right"} color='primary.dark' component='p'>
-                    35 Today
-                  </Typography>
-                </Box>
-              </Paper> */}
             </Box>
 
             <Box mb={2}>
@@ -204,7 +191,7 @@ export default function HomeComponent() {
               >
                 <Grid item xs='auto'>
                   {/* category */}
-                  <FormControl sx={{ width: 120 }}>
+                  <FormControl sx={{ width: 110 }} size='small'>
                     <InputLabel
                       sx={{ fontSize: '.9rem' }}
                       id='multiple-category'
@@ -235,7 +222,7 @@ export default function HomeComponent() {
                 <Grid item xs='auto'>
                   {/* type */}
 
-                  <FormControl sx={{ width: 120 }}>
+                  <FormControl sx={{ width: 110 }} size='small'>
                     <InputLabel
                       sx={{ fontSize: '.9rem' }}
                       id='multiple-type-label'
@@ -250,7 +237,6 @@ export default function HomeComponent() {
                       multiple
                       value={type}
                       onChange={handleTypeChange}
-                      // input={<OutlinedInput label='Type' />}
                       renderValue={(selected) => selected.join(', ')}
                       autoWidth
                       MenuProps={MenuProps}
@@ -267,7 +253,7 @@ export default function HomeComponent() {
                 <Grid item xs='auto'>
                   {/* level */}
 
-                  <FormControl sx={{ width: 120 }}>
+                  <FormControl sx={{ width: 110 }} size='small'>
                     <InputLabel
                       sx={{ fontSize: '.9rem' }}
                       id='demo-multiple-checkbox-label'
@@ -299,7 +285,7 @@ export default function HomeComponent() {
 
               <Button
                 variant='contained'
-                size='large'
+                size='medium'
                 sx={{ width: '70%' }}
                 onClick={handleSearch}
               >
@@ -312,9 +298,3 @@ export default function HomeComponent() {
     </Cover>
   );
 }
-
-/*
-On clicking the button,
-Take the value of level, category, type and convert to proper types understood by the server
-Create a url from above and direct to the content page 
-*/

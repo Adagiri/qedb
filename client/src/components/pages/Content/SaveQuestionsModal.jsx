@@ -14,7 +14,7 @@ import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import { Stack, Typography } from '@mui/material';
-import SubLoader from '../Loader/SubLoader';
+import SubLoader from '../../Loader/SubLoader';
 import { useSnackbar } from 'notistack';
 
 const style = {

@@ -1,6 +1,4 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import VerifyEmail from '../../components/Auth/VerifyEmail';
+import VerifyEmail from '../../components/pages/VerifyEmail';
 
 export default function Index() {
   return <VerifyEmail />;

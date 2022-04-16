@@ -33,13 +33,13 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-const pages = ['api', 'contribute', 'practice'];
+const pages = ['api', 'contribute', 'dashboard'];
 const pagesIcon = [
   <DeveloperModeIcon key='1' />,
   <ShareIcon key='2' />,
   <GamesIcon key='3' />,
 ];
-const settings = ['profile', 'dashboard', 'logout'];
+const settings = ['profile',  'logout'];
 const settingsIcon = [
   <AccountCircleIcon key='1' />,
   <DashboardIcon key='2' />,
@@ -75,9 +75,7 @@ const Navbar = () => {
     setCurrentPath(path);
   }, []);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };

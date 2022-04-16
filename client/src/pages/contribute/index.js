@@ -1,4 +1,4 @@
-import Contribute from '../../components/Contribute';
+import Contribute from '../../components/pages/Contribute';
 
 export default function ContributePage () {
   return <Contribute />;
