@@ -1,21 +1,19 @@
-1. Client tasks
+# Profile
 
-# Rearrange
-  
-# Contribute
+- username
+- questions - pending, approved, rejected
+- userType
 
-- submit questions
+# Content
+
+- pagination
+- 
 
 # Dashboard
 
 - export test
 - view test (rearrange questions)
 
-# Profile
-
-- username
-- questions - pending, approved, rejected
-- userType
 
 # Api
 

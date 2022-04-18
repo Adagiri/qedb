@@ -6,6 +6,8 @@ const {
   addQuestion,
   editQuestion,
   getQuestions,
+  addQuestionPublic,
+  getQuestionsStats,
 } = require('../controllers/questions');
 
 const { protect, authorize } = require('../middlewares/auth');
@@ -20,8 +22,9 @@ router
   .get(advancedResults(Question, 'Question'), getQuestions)
   .post(protect, addQuestion);
 
+router.post('/public-add', protect, addQuestionPublic);
 router.get('/ui', apiGetQuestions);
-
+router.get('/question-stats', getQuestionsStats);
 router
   .route('/:questionId')
   .get(getQuestion)

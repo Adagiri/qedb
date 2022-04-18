@@ -13,7 +13,6 @@ import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 
 import Cover from '../../Cover';
 
-
 const ITEM_HEIGHT = 40;
 const ITEM_PADDING_TOP = 10;
 const MenuProps = {
@@ -21,6 +20,11 @@ const MenuProps = {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
       width: 200,
+    },
+  },
+  MenuListProps: {
+    style: {
+      fontSize: '12px',
     },
   },
 };
@@ -34,10 +38,11 @@ export default function HomeComponent() {
   const [category, setCategory] = useState([]);
   const [type, setType] = useState([]);
   const [level, setLevel] = useState([]);
+  const [questionStats, setQuestionStats] = useState({});
 
   useEffect(() => {
-    // Get Categories
-    getCategories();
+    // Get Total number of questions
+    getResources();
   }, []);
 
   const handleSearch = () => {
@@ -53,7 +58,7 @@ export default function HomeComponent() {
     // Transform level
     const levelQuery = level.join(',').toLowerCase().replace(' ', '_');
 
-    const url = `/content?select=text,type,difficulty,category,options,answer,image,author${
+    const url = `/content?select=text,type,difficulty,category,options,answer,image,author&status=approved${
       categoryQuery && '&category=' + categoryQuery
     }${typeQuery && '&type=' + typeQuery}${
       levelQuery && '&difficulty=' + levelQuery
@@ -62,12 +67,29 @@ export default function HomeComponent() {
     router.push(url);
   };
 
-  const getCategories = async () => {
+  const getResources = async () => {
     const categoriesFromStorage = JSON.parse(
       localStorage.getItem('categories')
     );
+
+    const questionStatsFromStorage = JSON.parse(
+      localStorage.getItem('question-stats')
+    );
     if (categoriesFromStorage) {
       setCategories(categoriesFromStorage.map((elem) => elem.name));
+    }
+
+    if (questionStatsFromStorage) {
+      setQuestionStats(questionStatsFromStorage);
+    }
+
+    const stats = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/questions/question-stats`
+    );
+
+    if (stats.data) {
+      localStorage.setItem('question-stats', JSON.stringify(stats.data));
+      setQuestionStats(stats.data);
     }
 
     const categories = await axios.get(
@@ -139,158 +161,176 @@ export default function HomeComponent() {
               height: '100%',
               textAlign: 'center',
               borderRadius: { md: '10px' },
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
               color: '#fff',
               padding: '1rem',
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
-            <Box mt={2}>
-              <Typography
-                variant='h4'
-                component='h1'
-                color='primary'
-                mb={0.5}
-                fontWeight={600}
-              >
-                Welcome to QEDB,
-              </Typography>
-              <Typography variant='P' color='primary.dark' component='P'>
-                a plartform to fetch enough resources for your project.
-              </Typography>
-            </Box>
+            <Box width="100%">
+              <Box>
+                <Typography
+                  variant='h4'
+                  component='h1'
+                  color='primary'
+                  mb={5}
+                  fontWeight={600}
+                >
+                  Welcome to QEDB,
+                </Typography>
+                <Typography
+                  variant='h6'
+                  color='error.dark'
+                  component='P'
+                  mb={1}
+                >
+                  {questionStats.count || 0}{' '}
+                  <Typography variant='p' component='span' color='primary'>
+                    approved
+                  </Typography>{' '}
+                  Questions{' '}
+                </Typography>
+                <Typography
+                  variant='P'
+                  color='primary.dark'
+                  component='P'
+                  mb={4}
+                >
+                  a plartform to fetch enough resources for your project.
+                </Typography>
+              </Box>
 
-            <Box mb={2}>
-              <Typography
-                variant='P'
-                component='p'
-                fontWeight={600}
-                color='#1B3C36'
-                mb={4}
-              >
-                Kindly select the type of questions you want using the filter
-                below.
-              </Typography>
-              <Typography
-                variant='p'
-                color='primary'
-                component='h2'
-                mb={5}
-                fontWeight={600}
-              >
-                Search By Filter
-              </Typography>
+              <Box mb={2}>
+                <Typography
+                  variant='P'
+                  component='p'
+                  fontWeight={600}
+                  color='#1B3C36'
+                  mb={5}
+                >
+                  Kindly select the type of questions you want using the filter
+                  below.
+                </Typography>
+                <Typography
+                  variant='p'
+                  color='primary'
+                  component='h2'
+                  mb={2}
+                  fontWeight={600}
+                >
+                  Search By Filter
+                </Typography>
 
-              <Grid
-                container
-                spacing={2}
-                justifyContent='center'
-                alignItems='center'
-                mb={5}
-              >
-                <Grid item xs='auto'>
-                  {/* category */}
-                  <FormControl sx={{ width: 110 }} size='small'>
-                    <InputLabel
-                      sx={{ fontSize: '.9rem' }}
-                      id='multiple-category'
-                    >
-                      Category
-                    </InputLabel>
-                    <Select
-                      sx={{ fontSize: '.7rem' }}
-                      labelId='multiple-category'
-                      id='multiple-category'
-                      multiple
-                      value={category}
-                      onChange={handleCategoryChange}
-                      input={<OutlinedInput label='Category' />}
-                      renderValue={(selected) => selected.join(', ')}
-                      autoWidth
-                      MenuProps={MenuProps}
-                    >
-                      {categories.map((catz) => (
-                        <MenuItem key={catz} value={catz}>
-                          <Checkbox checked={category.indexOf(catz) > -1} />
-                          <ListItemText primary={catz} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                <Grid
+                  container
+                  spacing={2}
+                  justifyContent='center'
+                  alignItems='center'
+                  mb={3}
+                >
+                  <Grid item xs='auto'>
+                    {/* category */}
+                    <FormControl sx={{ width: 110 }} size='small'>
+                      <InputLabel
+                        sx={{ fontSize: '.9rem' }}
+                        id='multiple-category'
+                      >
+                        Category
+                      </InputLabel>
+                      <Select
+                        sx={{ fontSize: '.7rem' }}
+                        labelId='multiple-category'
+                        id='multiple-category'
+                        multiple
+                        value={category}
+                        onChange={handleCategoryChange}
+                        input={<OutlinedInput label='Category' />}
+                        renderValue={(selected) => selected.join(', ')}
+                        autoWidth
+                        MenuProps={MenuProps}
+                      >
+                        {categories.map((catz) => (
+                          <MenuItem key={catz} value={catz}>
+                            <Checkbox checked={category.indexOf(catz) > -1} />
+                            <ListItemText primary={catz} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs='auto'>
+                    {/* type */}
+
+                    <FormControl sx={{ width: 110 }} size='small'>
+                      <InputLabel
+                        sx={{ fontSize: '.9rem' }}
+                        id='multiple-type-label'
+                      >
+                        Type
+                      </InputLabel>
+                      <Select
+                        sx={{ fontSize: '.7rem' }}
+                        labelId='multiple-type-label'
+                        id='multiple-type'
+                        label='Type'
+                        multiple
+                        value={type}
+                        onChange={handleTypeChange}
+                        renderValue={(selected) => selected.join(', ')}
+                        autoWidth
+                        MenuProps={MenuProps}
+                      >
+                        {TYPES.map((typ) => (
+                          <MenuItem key={typ} value={typ}>
+                            <Checkbox checked={type.indexOf(typ) > -1} />
+                            <ListItemText primary={typ} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs='auto'>
+                    {/* level */}
+
+                    <FormControl sx={{ width: 110 }} size='small'>
+                      <InputLabel
+                        sx={{ fontSize: '.9rem' }}
+                        id='demo-multiple-checkbox-label'
+                      >
+                        Level
+                      </InputLabel>
+                      <Select
+                        sx={{ fontSize: '.7rem' }}
+                        labelId='multiple-level'
+                        id='multiple-level'
+                        multiple
+                        value={level}
+                        onChange={handleLevelChange}
+                        input={<OutlinedInput label='Type' />}
+                        renderValue={(selected) => selected.join(', ')}
+                        autoWidth
+                        MenuProps={MenuProps}
+                      >
+                        {LEVELS.map((lvl) => (
+                          <MenuItem key={lvl} value={lvl}>
+                            <Checkbox checked={level.indexOf(lvl) > -1} />
+                            <ListItemText primary={lvl} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
-                <Grid item xs='auto'>
-                  {/* type */}
 
-                  <FormControl sx={{ width: 110 }} size='small'>
-                    <InputLabel
-                      sx={{ fontSize: '.9rem' }}
-                      id='multiple-type-label'
-                    >
-                      Type
-                    </InputLabel>
-                    <Select
-                      sx={{ fontSize: '.7rem' }}
-                      labelId='multiple-type-label'
-                      id='multiple-type'
-                      label='Type'
-                      multiple
-                      value={type}
-                      onChange={handleTypeChange}
-                      renderValue={(selected) => selected.join(', ')}
-                      autoWidth
-                      MenuProps={MenuProps}
-                    >
-                      {TYPES.map((typ) => (
-                        <MenuItem key={typ} value={typ}>
-                          <Checkbox checked={type.indexOf(typ) > -1} />
-                          <ListItemText primary={typ} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs='auto'>
-                  {/* level */}
-
-                  <FormControl sx={{ width: 110 }} size='small'>
-                    <InputLabel
-                      sx={{ fontSize: '.9rem' }}
-                      id='demo-multiple-checkbox-label'
-                    >
-                      Level
-                    </InputLabel>
-                    <Select
-                      sx={{ fontSize: '.7rem' }}
-                      labelId='multiple-level'
-                      id='multiple-level'
-                      multiple
-                      value={level}
-                      onChange={handleLevelChange}
-                      input={<OutlinedInput label='Type' />}
-                      renderValue={(selected) => selected.join(', ')}
-                      autoWidth
-                      MenuProps={MenuProps}
-                    >
-                      {LEVELS.map((lvl) => (
-                        <MenuItem key={lvl} value={lvl}>
-                          <Checkbox checked={level.indexOf(lvl) > -1} />
-                          <ListItemText primary={lvl} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-
-              <Button
-                variant='contained'
-                size='medium'
-                sx={{ width: '70%' }}
-                onClick={handleSearch}
-              >
-                Search
-              </Button>
+                <Button
+                  variant='contained'
+                  size='medium'
+                  sx={{ width: '70%' }}
+                  onClick={handleSearch}
+                >
+                  Search
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>

@@ -75,9 +75,9 @@ const validateOptions = (value, allValues) => {
   return undefined;
 };
 
-const validateText = [required(), minLength(3), maxLength(100)];
+const validateText = [required(), minLength(3), maxLength(150)];
 const validateExplanation = [maxLength(800)];
-const validateOption = [required(), minLength(1), maxLength(20)];
+const validateOption = [required(), minLength(1), maxLength(50)];
 const validateAnswer = [required(), answerValidation];
 
 const PostEditActions = ({ basePath, data }) => (

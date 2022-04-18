@@ -111,12 +111,54 @@ module.exports.getQuestion = asyncHandler(async (req, res, next) => {
   res.status(200).json(question);
 });
 
+module.exports.getQuestionsStats = asyncHandler(async (req, res, next) => {
+  const count = await Question.countDocuments({ status: 'approved' });
+  res.status(200).json({ count });
+});
+
+// @desc      Add a question - public
+// @route     POST /api/v1/question/:id
+// @access    Private
+
+module.exports.addQuestionPublic = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  // Check if category was added
+  if (!req.body.category?.length) {
+    return next(new ErrorResponse(400, 'Please include categories'));
+  }
+
+  // Include author field
+  req.body.author = {
+    username: user.username,
+    id: user._id,
+  };
+
+  // Such question must be of pending status
+  req.body.status = 'pending';
+
+  // Include id field
+  req.body.id = crypto.randomBytes(20).toString('hex');
+
+  const question = await Question.create(req.body);
+
+  // Update relevant user fields
+
+  user.hasPosts = true;
+  user.qposted = user.qposted + 1;
+  user.qpending = user.qpending + 1;
+
+  await user.save();
+  question.id = question._id;
+
+  res.status(200).json(question);
+});
+
 // @desc      Add a question
 // @route     POST /api/v1/question/:id
 // @access    Private
 
 module.exports.addQuestion = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id)
+  const user = await User.findById(req.user.id);
   console.log(req.user);
   // Check if category was added
   if (!req.body.category?.length) {

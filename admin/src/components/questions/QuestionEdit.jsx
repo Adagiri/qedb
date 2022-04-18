@@ -63,8 +63,8 @@ const validateOptions = (value, allValues) => {
   return undefined;
 };
 
-const validateText = [required(), minLength(3), maxLength(80)];
-const validateOption = [required(), minLength(1), maxLength(20)];
+const validateText = [required(), minLength(3), maxLength(150)];
+const validateOption = [required(), minLength(1), maxLength(50)];
 const validateExplanation = [maxLength(800)];
 const validateAnswer = [required(), answerValidation];
 

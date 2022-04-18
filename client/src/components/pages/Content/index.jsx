@@ -4,12 +4,9 @@ import React, { useEffect, useState } from 'react';
 import Cover from '../../Cover';
 import Navbar from '../../Navbar';
 import ContentCard from './ContentCard';
-import ContentModal from './ContentModal';
 import Fab from '@mui/material/Fab';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-// import Pdf from 'react-to-pdf';
-import { Alert, Typography } from '@mui/material';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';

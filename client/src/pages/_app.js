@@ -5,14 +5,20 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
 import Head from 'next/head';
 import ScrollTop from '../components/ScrollToTop';
+import Collapse from '@mui/material/Collapse';
+
 
 const theme = createTheme({
   palette: {
     primary: {
       main: '#449788',
-      light: '##93CBC1',
-      dark: '#1B3C36',
     },
+    text: {
+      main: '#828282',
+      darker: '#000000',
+      contrastText: '#fff',
+    },
+
     secondary: {
       main: '#FFFBFB',
     },
@@ -24,10 +30,15 @@ const theme = createTheme({
       main: '#EA4134',
       dark: '#CC2E2E',
     },
+    // Used by `getContrastText()` to maximize the contrast between
+    // the background and the text.
+    contrastThreshold: 3,
+    // Used by the functions below to shift a color's luminance by approximately
+    // two indexes within its tonal palette.
+    // E.g., shift from Red 500 to Red 300 or Red 700.
+    tonalOffset: 0.2,
   },
 });
-
-
 
 function MyApp(props) {
   const { Component, pageProps } = props;
@@ -43,13 +54,20 @@ function MyApp(props) {
           rel='stylesheet'
         />
       </Head>
-      <SnackbarProvider maxSnack={3}>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <SnackbarProvider
+          maxSnack={3}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          TransitionComponent={Collapse}
+        >
           <Toolbar id='back-to-top-anchor' sx={{ position: 'absolute' }} />
           <Component {...pageProps} />
           <ScrollTop {...props} />
-        </ThemeProvider>
-      </SnackbarProvider>
+        </SnackbarProvider>
+      </ThemeProvider>
     </>
   );
 }
