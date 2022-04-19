@@ -9,7 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
 import Cover from '../../Cover';
 
@@ -39,6 +39,7 @@ export default function HomeComponent() {
   const [type, setType] = useState([]);
   const [level, setLevel] = useState([]);
   const [questionStats, setQuestionStats] = useState({});
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     // Get Total number of questions
@@ -58,11 +59,11 @@ export default function HomeComponent() {
     // Transform level
     const levelQuery = level.join(',').toLowerCase().replace(' ', '_');
 
-    const url = `/content?select=text,type,difficulty,category,options,answer,image,author&status=approved${
+    const url = `/content?select=text,type,difficulty,category,options,answer,image,author,credits,explanation&status=approved${
       categoryQuery && '&category=' + categoryQuery
     }${typeQuery && '&type=' + typeQuery}${
       levelQuery && '&difficulty=' + levelQuery
-    }`;
+    }${search && '&search=' + search}`;
 
     router.push(url);
   };
@@ -167,29 +168,34 @@ export default function HomeComponent() {
               alignItems: 'center',
             }}
           >
-            <Box width="100%">
+            <Box width='100%'>
               <Box>
                 <Typography
                   variant='h4'
                   component='h1'
                   color='primary'
-                  mb={5}
+                  mb={3}
                   fontWeight={600}
                 >
                   Welcome to QEDB,
                 </Typography>
+                <Typography variant='h6' color='error.dark' component='P'>
+                  {questionStats.approved || 0}{' '}
+                  <Typography variant='p' component='span' color='primary'>
+                    approved,
+                  </Typography>{' '}
+                  {questionStats.pending || 0}{' '}
+                  <Typography variant='p' component='span' color='primary'>
+                    pending
+                  </Typography>{' '}
+                </Typography>
+
                 <Typography
                   variant='h6'
                   color='error.dark'
                   component='P'
                   mb={1}
-                >
-                  {questionStats.count || 0}{' '}
-                  <Typography variant='p' component='span' color='primary'>
-                    approved
-                  </Typography>{' '}
-                  Questions{' '}
-                </Typography>
+                ></Typography>
                 <Typography
                   variant='P'
                   color='primary.dark'
@@ -226,7 +232,7 @@ export default function HomeComponent() {
                   spacing={2}
                   justifyContent='center'
                   alignItems='center'
-                  mb={3}
+                  mb={1}
                 >
                   <Grid item xs='auto'>
                     {/* category */}
@@ -321,7 +327,16 @@ export default function HomeComponent() {
                     </FormControl>
                   </Grid>
                 </Grid>
-
+                <TextField
+                  placeholder='Type and search Ibrahim Ridwan'
+                  size='small'
+                  variant='standard'
+                  autoFocus={true}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  focused
+                  sx={{ mb: 4, mt: 2 }}
+                />
                 <Button
                   variant='contained'
                   size='medium'

@@ -112,8 +112,9 @@ module.exports.getQuestion = asyncHandler(async (req, res, next) => {
 });
 
 module.exports.getQuestionsStats = asyncHandler(async (req, res, next) => {
-  const count = await Question.countDocuments({ status: 'approved' });
-  res.status(200).json({ count });
+  const approved = await Question.countDocuments({ status: 'approved' });
+  const pending = await Question.countDocuments({ status: 'pending' });
+  res.status(200).json({ approved, pending });
 });
 
 // @desc      Add a question - public

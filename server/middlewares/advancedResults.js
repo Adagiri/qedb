@@ -47,24 +47,35 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
     'createdAt.$gte',
     'createdAt.$lt',
     'createdAt.$lte',
+
   ];
 
   for (const key in queryStr) {
     if (!dateFields.find((field) => field === key)) {
       console.log('queryStr before', queryStr);
-      queryStr[key] = {
-        $in:
-          typeof queryStr[key] === 'object'
-            ? queryStr[key]
-            : queryStr[key].split(','),
-      };
+
+    if (key !== "search") {
+     queryStr[key] = {
+       $in:
+         typeof queryStr[key] === 'object'
+           ? queryStr[key]
+           : queryStr[key].split(','),
+     };
+    }
+ 
       console.log('queryStr after', queryStr);
     }
   }
 
+  queryStr.search &&
+    (queryStr.text = { $regex: queryStr.search, $options: 'i' });
+
+
   queryStr.id && (queryStr._id = queryStr.id);
   queryStr['author.id'] &&
-    (queryStr['author.id'] = [mongoose.Types.ObjectId(queryStr['author.id'][0])]);
+    (queryStr['author.id'] = [
+      mongoose.Types.ObjectId(queryStr['author.id'][0]),
+    ]);
   delete queryStr.id;
 
   // Transform query for date comparism
@@ -90,6 +101,9 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
         { username: { $regex: queryStr.q, $options: 'i' } },
       ]);
   }
+
+    console.log(queryStr, 'final');
+
 
   queryStr.id && (queryStr._id = queryStr.id);
 

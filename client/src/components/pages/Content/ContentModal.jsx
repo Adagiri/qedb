@@ -5,8 +5,19 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { ButtonGroup } from '@mui/material';
+import {
+  ButtonGroup,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Link,
+} from '@mui/material';
 import Image from 'next/image';
+import { useSnackbar } from 'notistack';
+import CancelIcon from '@mui/icons-material/Cancel';
+import parse from 'html-react-parser';
 
 const style = {
   position: 'absolute',
@@ -15,14 +26,24 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
+  // boxShadow: 24,
   p: 4,
+  height: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  position: 'relative',
   // px: 2
+};
+
+const anchorOrigin = {
+  vertical: 'top',
+  horizontal: 'center',
 };
 
 export default function ContentModal(props) {
   const { question, setQuestion } = props;
+  const [showExp, setShowExp] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const open = Object.keys(question).length > 0 ? true : false;
 
@@ -41,58 +62,148 @@ export default function ContentModal(props) {
           timeout: 500,
         }}
         onBackdropClick={handleClose}
-        sx={{zIndex: 10}}
+        sx={{ zIndex: 10 }}
+        disableScrollLock={true}
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography
-              id='transition-modal-title'
-              variant='p'
-              component='h4'
-              color='primary'
+            <IconButton
+              sx={{ position: 'absolute', top: '.5rem', right: '2rem' }}
+              onClick={() => setQuestion({})}
             >
-              {question.category &&
-                question.category.map((catz) => catz + ', ')}
-            </Typography>
-            <Typography
-              id='transition-modal-description'
-              sx={{ mt: 2, mb: 2 }}
-              component='p'
-            >
-              {question.text}
-            </Typography>
+              <CancelIcon />
+            </IconButton>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography
+                id='transition-modal-title'
+                variant='p'
+                component='h4'
+                color='primary'
+                mt={3}
+              >
+                {question.category &&
+                  question.category.map((catz) => catz + ', ')}
+              </Typography>
+              <Typography
+                id='transition-modal-description'
+                sx={{ mt: 2, mb: 2 }}
+                component='p'
+              >
+                {question.text}
+              </Typography>
 
-            {question.image && (
-              <Image
-                src={question.image}
-                height='200px'
-                width='300px'
-                objectFit='cover'
-              />
-            )}
-            <Box
-              variant='contained'
-              aria-label='outlined primary button group'
-              sx={{
-                mt: 2,
-                display: 'flex',
-                justifyContent: 'flex-start',
-                flexWrap: 'wrap',
-              }}
-            >
-              {question.options &&
-                question.options.map((option) => (
+              {question.image && (
+                <a href={question.image}>
+                  <Image
+                    src={question.image}
+                    height='200px'
+                    width='200px'
+                    className='modal-image'
+                    objectFit='cover'
+                  />
+                </a>
+              )}
+              <Box
+                variant='contained'
+                aria-label='outlined primary button group'
+                sx={{
+                  mt: 2,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {question.options &&
+                  question.options.map((option) => (
+                    <Button
+                      variant='contained'
+                      color={question.answer === option ? 'error' : 'error'}
+                      key={option}
+                      size='small'
+                      onClick={() => {
+                        if (option === question.answer) {
+                          enqueueSnackbar('Correct', {
+                            variant: 'success',
+                            autoHideDuration: 800,
+                            anchorOrigin,
+                          });
+                          return;
+                        }
+                        enqueueSnackbar('Wrong', {
+                          variant: 'error',
+                          autoHideDuration: 800,
+                          anchorOrigin,
+                        });
+                      }}
+                      sx={{ m: 0.8, ml: 0, display: 'inline-block', px: 1 }}
+                      // disabled
+                    >
+                      {option}
+                    </Button>
+                  ))}
+              </Box>
+
+              {question.credits && (
+                <Box
+                  mt={3}
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'space-around',
+                  }}
+                >
+                  {question.credits.map((credit) => (
+                    <Link target='_blank' passHref href={credit.link}>
+                      {credit.title}
+                    </Link>
+                  ))}
+                </Box>
+              )}
+
+              {question.explanation && (
+                <Box my={3} mb={1}>
                   <Button
                     variant='contained'
-                    color={question.answer === option ? 'primary' : 'error'}
-                    key={option}
+                    onClick={() => setShowExp(!showExp)}
                     size='small'
-                    sx={{ m: 0.8, ml: 0, display: 'inline-block', px: 1 }}
-                    // disabled
                   >
-                    {option}
+                    Show Explanation
                   </Button>
-                ))}
+
+                  {showExp && (
+                    <Dialog
+                      open={showExp}
+                      onClose={() => {
+                        setShowExp(!showExp);
+                      }}
+                      aria-labelledby='alert-dialog-title'
+                      aria-describedby='alert-dialog-description'
+                    >
+                      {/* <DialogTitle id='alert-dialog-title'>
+                        Explanation
+                      </DialogTitle> */}
+                      <DialogContent>
+                        <DialogContentText id='alert-dialog-description'>
+                          <Typography
+                            width={'100%'}
+                            textAlign='center'
+                            sx={{
+                              wordBreak: 'break-all',
+                              mb: 3,
+                              // padding: '5px',
+                            }}
+                            component='html'
+                            noWrap={false}
+                            color='#000'
+                          >
+                            {parse(question.explanation)}
+                          </Typography>
+                        </DialogContentText>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                </Box>
+              )}
             </Box>
           </Box>
         </Fade>

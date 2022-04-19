@@ -56,7 +56,8 @@ function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <SnackbarProvider
-          maxSnack={3}
+          maxSnack={1}
+          dense={true}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center',

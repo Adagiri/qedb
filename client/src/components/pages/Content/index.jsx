@@ -93,7 +93,7 @@ export default function Contribute() {
       {loader ? (
         <MainLoader loader={loader} />
       ) : (
-        <Box p={2}>
+        <Box width="100%" p={2}>
           {content.map((cont) => (
             <ContentCard
               selected={selected}

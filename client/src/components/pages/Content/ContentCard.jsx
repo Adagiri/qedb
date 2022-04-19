@@ -25,6 +25,7 @@ const styles = (theme) => ({
     marginBottom: '1rem',
     justifyContent: 'space-between',
     cursor: 'pointer',
+    width: '100%',
   },
 
   imageBox: {
@@ -41,6 +42,9 @@ const styles = (theme) => ({
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
+    flex: '1 0 auto',
+    flexGrow: '1',
+    width: '100%',
   },
 });
 
@@ -77,11 +81,21 @@ onchecking, remove the id from the list, oncheck, at the id again
   return (
     <>
       <Card className={classes.root}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-          <Checkbox disableRipple disableTouchRipple disableFocusRipple  onClick={handleCheck} size='small' {...label} />
+        <Box
+          sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}
+        >
+          <Checkbox
+            disableRipple
+            disableTouchRipple
+            disableFocusRipple
+            onClick={handleCheck}
+            size='small'
+            // sx={{fle }}
+            {...label}
+          />
           <Box onClick={handleClick} className={classes.contentBox}>
-            <CardContent sx={{ flex: '1 0 auto' , width: "100%"}}>
-              <Typography noWrap={true} component='p' variant='p'>
+            <CardContent sx={{ flex: '1 0 auto', width: '100%' }}>
+              <Typography noWrap component='p' variant='p' width={'90%'}>
                 {text}
               </Typography>
 
@@ -112,17 +126,19 @@ onchecking, remove the id from the list, oncheck, at the id again
           </Box>
         </Box>
 
-        <Box className={classes.imageBox}>
-          <Image
-            src={image || 'https://qedb.s3.amazonaws.com/qedb-colored.svg'}
-            alt={category[0]}
-            layout='fill'
-            objectFit='cover'
-            objectPosition={'50% 50%'}
-            // width={"80px"}
-            // height={'20px'}
-          />
-        </Box>
+        {image && (
+          <Box className={classes.imageBox}>
+            <Image
+              src={image}
+              alt={category[0]}
+              layout='fill'
+              objectFit='cover'
+              objectPosition={'50% 50%'}
+              // width={"80px"}
+              // height={'20px'}
+            />
+          </Box>
+        )}
       </Card>
       {<ContentModal question={question} setQuestion={setQuestion} />}
     </>
