@@ -328,7 +328,7 @@ export default function HomeComponent() {
                   </Grid>
                 </Grid>
                 <TextField
-                  placeholder='Type and search Ibrahim Ridwan'
+                  placeholder="Search - Ridwan bin Ibrahim'
                   size='small'
                   variant='standard'
                   autoFocus={true}
