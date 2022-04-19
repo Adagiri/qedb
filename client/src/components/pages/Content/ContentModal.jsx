@@ -153,7 +153,7 @@ export default function ContentModal(props) {
                   }}
                 >
                   {question.credits.map((credit) => (
-                    <Link target='_blank' passHref href={credit.link}>
+                    <Link key={credit.link} target='_blank' passHref href={credit.link}>
                       {credit.title}
                     </Link>
                   ))}
