@@ -94,10 +94,10 @@ export default function ContentModal(props) {
               </Typography>
 
               {question.image && (
-                <a target="_blank" href={question.image}>
+                <a target='_blank' rel='noreferrer' href={question.image}>
                   <Image
-                    // src={question.image}
-                    src={'/test.png'}
+                    src={question.image}
+                    // src={'/test.png'}
                     height='200px'
                     width='200px'
                     className='modal-image'
@@ -122,14 +122,12 @@ export default function ContentModal(props) {
                       color={question.answer === option ? 'shader' : 'shader'}
                       key={option}
                       size='small'
-                      
                       onClick={() => {
                         if (option === question.answer) {
                           enqueueSnackbar('Correct', {
                             variant: 'success',
                             autoHideDuration: 800,
                             anchorOrigin,
-                            
                           });
                           return;
                         }
@@ -139,7 +137,14 @@ export default function ContentModal(props) {
                           anchorOrigin,
                         });
                       }}
-                      sx={{ m: 0.8, ml: 0, display: 'inline-block', px: 1, fontSize: "10px", fontWeight:500 }}
+                      sx={{
+                        m: 0.8,
+                        ml: 0,
+                        display: 'inline-block',
+                        px: 1,
+                        fontSize: '10px',
+                        fontWeight: 500,
+                      }}
                       // disabled
                     >
                       {option}
@@ -175,7 +180,7 @@ export default function ContentModal(props) {
                     variant='contained'
                     onClick={() => setShowExp(!showExp)}
                     size='small'
-                    color="primary"
+                    color='primary'
                   >
                     Show Explanation
                   </Button>

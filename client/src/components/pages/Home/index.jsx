@@ -181,15 +181,23 @@ export default function HomeComponent() {
                     variant='p'
                     color='primary.dark'
                     component='span'
-                    children='Welcome to '
                     fontSize='18px'
-                  />
+                  >
+                    Welcome to{' '}
+                  </Typography>
                   QEDB
                 </Typography>
-                <Typography variant='p' fontSize={"15px"} mb={4} fontWeight={600} color='error.dark' component='P'>
+                <Typography
+                  variant='p'
+                  fontSize={'15px'}
+                  mb={4}
+                  fontWeight={600}
+                  color='error.dark'
+                  component='P'
+                >
                   {questionStats.approved || 0}{' '}
                   <Typography variant='p' component='span' color='primary'>
-                     approved resources
+                    approved resources
                   </Typography>{' '}
                   {/* {questionStats.pending || 0}{' '}
                   <Typography variant='p' component='span' color='primary'>
@@ -210,8 +218,10 @@ export default function HomeComponent() {
                     color='primary'
                     component='span'
                     fontWeight={600}
-                    children='Fetch '
-                  />
+               
+                  >
+                    Fetch{' '}
+                  </Typography>
                   enough resources for your project
                 </Typography>
               </Box>
@@ -224,8 +234,8 @@ export default function HomeComponent() {
                   color='error'
                   mb={3}
                 >
-                  Select the resource specification you want using the filter below
-  
+                  Select the resource specification you want using the filter
+                  below
                 </Typography>
                 <Typography
                   variant='p'
