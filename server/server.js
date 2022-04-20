@@ -27,7 +27,7 @@ const libraries = require('./routes/libraries');
 
 const app = express();
 
-app.use(cors({ exposedHeaders: 'X-Total-Count' }));
+app.use(cors({ exposedHeaders: ['X-Total-Count', 'Has-More-Result'] }));
 
 app.use(cookieParser());
 

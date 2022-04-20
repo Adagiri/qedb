@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
 import Head from 'next/head';
 import ScrollTop from '../components/ScrollToTop';
-import Collapse from '@mui/material/Collapse';
+import Grow from '@mui/material/Grow';
 
 
 const theme = createTheme({
@@ -56,13 +56,14 @@ function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <SnackbarProvider
+        hideIconVariant
           maxSnack={1}
-          dense={true}
+          dense
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center',
           }}
-          TransitionComponent={Collapse}
+          TransitionComponent={Grow}
         >
           <Toolbar id='back-to-top-anchor' sx={{ position: 'absolute' }} />
           <Component {...pageProps} />

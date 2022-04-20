@@ -1,13 +1,12 @@
 # Content
 
-- enhance modal view on mobile __done__
-- add explanation and credit fields to modal __done__
-- pagination
+- enhance modal view on mobile **done**
+- add explanation and credit fields to modal **done**
+- pagination **done**
 - filters on top + search field
-
-# Contribute
-
-- multiple category fields functionality
+- fix content not displaying properly for non-image questions **done**
+- reduce button size in modal **done**
+- bring down the close button abit **done**
 
 # Profile
 
@@ -26,12 +25,12 @@
 
 - opentdb api page alike
 
-# Admin
-
-- make home banner dynamic
-- make search functionality working
-- replace old images
-
 # Extras
 
 - Make categories show up ath the end of each question card
+- Add select all question checkbox for on content page
+
+**Admin**
+- make home banner dynamic
+- make search functionality working
+- replace old images

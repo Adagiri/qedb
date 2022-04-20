@@ -129,7 +129,8 @@ onchecking, remove the id from the list, oncheck, at the id again
         {image && (
           <Box className={classes.imageBox}>
             <Image
-              src={image}
+              src={'/test.png'}
+              // src={image}
               alt={category[0]}
               layout='fill'
               objectFit='cover'

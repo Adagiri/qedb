@@ -13,13 +13,13 @@ import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
 import Cover from '../../Cover';
 
-const ITEM_HEIGHT = 40;
+const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = 10;
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 200,
+      width: 270,
     },
   },
   MenuListProps: {
@@ -174,54 +174,64 @@ export default function HomeComponent() {
                   variant='h4'
                   component='h1'
                   color='primary'
-                  mb={3}
+                  mb={1}
                   fontWeight={600}
                 >
-                  Welcome to QEDB,
+                  <Typography
+                    variant='p'
+                    color='primary.dark'
+                    component='span'
+                    children='Welcome to '
+                    fontSize='18px'
+                  />
+                  QEDB
                 </Typography>
-                <Typography variant='h6' color='error.dark' component='P'>
+                <Typography variant='p' fontSize={"15px"} mb={4} fontWeight={600} color='error.dark' component='P'>
                   {questionStats.approved || 0}{' '}
                   <Typography variant='p' component='span' color='primary'>
-                    approved,
+                     approved resources
                   </Typography>{' '}
-                  {questionStats.pending || 0}{' '}
+                  {/* {questionStats.pending || 0}{' '}
                   <Typography variant='p' component='span' color='primary'>
                     pending
-                  </Typography>{' '}
+                  </Typography>{' '} */}
                 </Typography>
 
                 <Typography
-                  variant='h6'
-                  color='error.dark'
-                  component='P'
-                  mb={1}
-                ></Typography>
-                <Typography
-                  variant='P'
+                  variant='p'
                   color='primary.dark'
                   component='P'
                   mb={4}
+                  fontWeight={600}
+                  fontSize='18px'
                 >
-                  a plartform to fetch enough resources for your project.
+                  <Typography
+                    variant='h5'
+                    color='primary'
+                    component='span'
+                    fontWeight={600}
+                    children='Fetch '
+                  />
+                  enough resources for your project
                 </Typography>
               </Box>
 
-              <Box mb={2}>
+              <Box mb={1}>
                 <Typography
                   variant='P'
                   component='p'
                   fontWeight={600}
-                  color='#1B3C36'
-                  mb={5}
+                  color='error'
+                  mb={3}
                 >
-                  Kindly select the type of questions you want using the filter
-                  below.
+                  Select the resource specification you want using the filter below
+  
                 </Typography>
                 <Typography
                   variant='p'
                   color='primary'
                   component='h2'
-                  mb={2}
+                  mb={1}
                   fontWeight={600}
                 >
                   Search By Filter
@@ -328,7 +338,7 @@ export default function HomeComponent() {
                   </Grid>
                 </Grid>
                 <TextField
-                  placeholder="Search - Ridwan bin Ibrahim"
+                  placeholder='Search - Ridwan bin Ibrahim'
                   size='small'
                   variant='standard'
                   autoFocus={true}

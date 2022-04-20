@@ -47,29 +47,27 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
     'createdAt.$gte',
     'createdAt.$lt',
     'createdAt.$lte',
-
   ];
 
   for (const key in queryStr) {
     if (!dateFields.find((field) => field === key)) {
       console.log('queryStr before', queryStr);
 
-    if (key !== "search") {
-     queryStr[key] = {
-       $in:
-         typeof queryStr[key] === 'object'
-           ? queryStr[key]
-           : queryStr[key].split(','),
-     };
-    }
- 
+      if (key !== 'search') {
+        queryStr[key] = {
+          $in:
+            typeof queryStr[key] === 'object'
+              ? queryStr[key]
+              : queryStr[key].split(','),
+        };
+      }
+
       console.log('queryStr after', queryStr);
     }
   }
 
   queryStr.search &&
     (queryStr.text = { $regex: queryStr.search, $options: 'i' });
-
 
   queryStr.id && (queryStr._id = queryStr.id);
   queryStr['author.id'] &&
@@ -102,8 +100,7 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
       ]);
   }
 
-    console.log(queryStr, 'final');
-
+  console.log(queryStr, 'final');
 
   queryStr.id && (queryStr._id = queryStr.id);
 
@@ -136,7 +133,7 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
   const startIndex = parseInt(req.query._start, 10);
   const endIndex = parseInt(req.query._end, 10);
   const total = await model.countDocuments(queryStr);
-
+console.log(startIndex, 'sI')
   query = query.skip(startIndex).limit(limit);
 
   // Executing query
@@ -177,7 +174,9 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
         limit,
       };
     }
-
+    console.log(total, endIndex);
+    const hasMoreResult =
+      total > endIndex - limit + results.length ? true : false;
     results = results.map((result) => {
       result.id = result._id;
       delete result.__v;
@@ -185,6 +184,7 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
     });
 
     res.header('X-Total-Count', total);
+    res.header('Has-More-Result', hasMoreResult);
 
     // console.log(results);
 

@@ -31,6 +31,7 @@ const style = {
   height: '100vh',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: "center",
   position: 'relative',
   // px: 2
 };
@@ -68,7 +69,7 @@ export default function ContentModal(props) {
         <Fade in={open}>
           <Box sx={style}>
             <IconButton
-              sx={{ position: 'absolute', top: '.5rem', right: '2rem' }}
+              sx={{ position: 'absolute', top: '20px', right: '30px' }}
               onClick={() => setQuestion({})}
             >
               <CancelIcon />
@@ -93,9 +94,10 @@ export default function ContentModal(props) {
               </Typography>
 
               {question.image && (
-                <a href={question.image}>
+                <a target="_blank" href={question.image}>
                   <Image
-                    src={question.image}
+                    // src={question.image}
+                    src={'/test.png'}
                     height='200px'
                     width='200px'
                     className='modal-image'
@@ -117,15 +119,17 @@ export default function ContentModal(props) {
                   question.options.map((option) => (
                     <Button
                       variant='contained'
-                      color={question.answer === option ? 'error' : 'error'}
+                      color={question.answer === option ? 'shader' : 'shader'}
                       key={option}
                       size='small'
+                      
                       onClick={() => {
                         if (option === question.answer) {
                           enqueueSnackbar('Correct', {
                             variant: 'success',
                             autoHideDuration: 800,
                             anchorOrigin,
+                            
                           });
                           return;
                         }
@@ -135,7 +139,7 @@ export default function ContentModal(props) {
                           anchorOrigin,
                         });
                       }}
-                      sx={{ m: 0.8, ml: 0, display: 'inline-block', px: 1 }}
+                      sx={{ m: 0.8, ml: 0, display: 'inline-block', px: 1, fontSize: "10px", fontWeight:500 }}
                       // disabled
                     >
                       {option}
@@ -153,7 +157,12 @@ export default function ContentModal(props) {
                   }}
                 >
                   {question.credits.map((credit) => (
-                    <Link key={credit.link} target='_blank' passHref href={credit.link}>
+                    <Link
+                      key={credit.link}
+                      target='_blank'
+                      passHref
+                      href={credit.link}
+                    >
                       {credit.title}
                     </Link>
                   ))}
@@ -166,6 +175,7 @@ export default function ContentModal(props) {
                     variant='contained'
                     onClick={() => setShowExp(!showExp)}
                     size='small'
+                    color="primary"
                   >
                     Show Explanation
                   </Button>

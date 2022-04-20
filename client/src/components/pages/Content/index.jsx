@@ -1,6 +1,6 @@
 import { Box } from '@mui/system';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Cover from '../../Cover';
 import Navbar from '../../Navbar';
 import ContentCard from './ContentCard';
@@ -13,7 +13,10 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import SaveQuestionsModal from './SaveQuestionsModal';
 import MainLoader from '../../Loader/MainLoader';
 import { useSnackbar } from 'notistack';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import { IconButton } from '@mui/material';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const optionTexts = ['a', 'b', 'c', 'd', 'e', 'f'];
@@ -22,11 +25,16 @@ export default function Contribute() {
   const [query, setQuery] = useState('');
   const [user, setUser] = useState({});
   const [content, setContent] = useState([]);
+  const [hasMoreData, setHasMoreResult] = useState(false);
   const [loader, setLoader] = useState(true);
+  const [fetching, setFetching] = useState(false);
   const [selected, setSelected] = useState([]);
   const [addQuestionModal, setAddQuestionModal] = useState(false);
-
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(15);
   const { enqueueSnackbar } = useSnackbar();
+
+  const LIMIT = 10;
   const router = useRouter();
 
   const docDefinition = {
@@ -69,42 +77,77 @@ export default function Contribute() {
 
     setQuery(window.location.search);
 
-    fetchContent();
+    fetchContent(0, 15);
   }, []);
 
-  const fetchContent = async () => {
+  const fetchContent = async (_start, _end) => {
     try {
+      setFetching(true);
       const contentData = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/questions${window.location.search}`
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/questions${window.location.search}&_start=${_start}&_end=${_end}&limit=${LIMIT}`
       );
-
-      setContent(contentData.data);
+      console.log(contentData);
+      setContent([...content, ...contentData.data]);
+      setHasMoreResult(contentData.headers['has-more-result'] === "true"? true : false);
       setLoader(false);
+      setFetching(false);
+      setStart(end);
+      setEnd(end + LIMIT);
     } catch (error) {
       console.log(error);
+      setFetching(false);
       setLoader(false);
     }
   };
 
+  // Fetch more on scroll logic
+  const listInnerRef = useRef();
+  const onScroll = () => {
+    if (listInnerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+      if (scrollTop + clientHeight === scrollHeight) {
+        if (hasMoreData && !fetching) {
+          fetchContent(start, end);
+        }
+      }
+    }
+  };
+
+  if (loader) {
+    return <MainLoader loader={loader} />;
+  }
+
   return (
-    <Box>
+    <Box
+      onScroll={onScroll}
+      ref={listInnerRef}
+      sx={{ overflowY: 'auto', height: '100vh' }}
+    >
       <Navbar />
-      {/* {content.length && <Box width={'100%'}>{JSON.stringify(content)}</Box>} */}
-      {loader ? (
-        <MainLoader loader={loader} />
-      ) : (
-        <Box width="100%" p={2}>
-          {content.map((cont) => (
-            <ContentCard
-              selected={selected}
-              setSelected={setSelected}
-              key={cont.id}
-              content={cont}
-            />
-          ))}
-        </Box>
-      )}
-      {/* <ContentModal /> */}
+      <Box width='100%' sx={{ position: 'relative' }} p={2}>
+        <Fab
+          color='primary'
+          size='medium'
+          aria-label='download'
+          sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
+        >
+          <ChangeCircleIcon />
+        </Fab>
+     
+        {content.map((cont) => (
+          <ContentCard
+            selected={selected}
+            setSelected={setSelected}
+            key={cont.id}
+            content={cont}
+          />
+        ))}
+        {fetching && (
+          <Box width='100%' textAlign='center'>
+            <Image src={'/loadIcon_colored.svg'} height='50px' width='50px' />
+          </Box>
+        )}
+      </Box>
 
       {selected.length > 0 && (
         <Box
@@ -117,6 +160,7 @@ export default function Contribute() {
             left: '60px',
             width: '20px',
             zIndex: '5',
+            height: 'auto',
           }}
         >
           <Fab
