@@ -129,7 +129,7 @@ export default function Contribute() {
           color='primary'
           size='medium'
           aria-label='download'
-          sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
+          sx={{ position: 'fixed', bottom: '50px', right: '20px' }}
         >
           <ChangeCircleIcon />
         </Fab>

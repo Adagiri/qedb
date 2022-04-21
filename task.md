@@ -4,6 +4,7 @@
 - add explanation and credit fields to modal **done**
 - pagination **done**
 - filters on top + search field
+- fix search button covering scrollto-top icon
 - fix content not displaying properly for non-image questions **done**
 - reduce button size in modal **done**
 - bring down the close button abit **done**
@@ -34,3 +35,5 @@
 - make home banner dynamic
 - make search functionality working
 - replace old images
+- swiping
+- tags functionality
