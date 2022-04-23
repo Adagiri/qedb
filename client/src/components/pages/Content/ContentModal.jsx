@@ -96,8 +96,8 @@ export default function ContentModal(props) {
               {question.image && (
                 <a target='_blank' rel='noreferrer' href={question.image}>
                   <Image
-                    src={question.image}
-                    // src={'/test.png'}
+                    // src={question.image}
+                    src={'/test.png'}
                     height='200px'
                     width='200px'
                     className='modal-image'

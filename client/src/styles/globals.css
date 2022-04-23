@@ -9,3 +9,8 @@ body {
 .modal-image {
   border-radius: 100%;
 }
+
+.scroll-to-top-class {
+  box-shadow: none;
+  border-radius: 100px;
+}

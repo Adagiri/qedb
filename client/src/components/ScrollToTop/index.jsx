@@ -3,6 +3,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 
 import { Fab, Zoom } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import ScrollToTop from 'react-scroll-to-top';
 
 export default function ScrollTop(props) {
   const { children, window } = props;
@@ -31,7 +32,7 @@ export default function ScrollTop(props) {
       <Box
         onClick={handleClick}
         role='presentation'
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 40 }}
       >
         <Fab color='primary' size='small' aria-label='scroll back to top'>
           <KeyboardArrowUpIcon />

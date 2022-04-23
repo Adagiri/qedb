@@ -6,7 +6,9 @@ import { SnackbarProvider } from 'notistack';
 import Head from 'next/head';
 import ScrollTop from '../components/ScrollToTop';
 import Grow from '@mui/material/Grow';
-
+import ScrollToTop from 'react-scroll-to-top';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Fab } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -44,7 +46,7 @@ function MyApp(props) {
   const { Component, pageProps } = props;
 
   return (
-    <>
+    <div>
       <Head>
         <title>Qedb</title>
         <link rel='preconnect' href='https://fonts.googleapis.com' />
@@ -56,7 +58,7 @@ function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <SnackbarProvider
-        hideIconVariant
+          hideIconVariant
           maxSnack={1}
           dense
           anchorOrigin={{
@@ -67,10 +69,22 @@ function MyApp(props) {
         >
           <Toolbar id='back-to-top-anchor' sx={{ position: 'absolute' }} />
           <Component {...pageProps} />
-          <ScrollTop {...props} />
+          <ScrollToTop
+            style={{
+              boxShadow: 'none',
+              borderRadius: '100px',
+              background: '#93CBC1',
+            }}
+            component={
+              // <Fab color='primary' size='small' aria-label='scroll back to top'>
+              <KeyboardArrowUpIcon color='white' />
+              // </Fab>
+            }
+            smooth
+          />
         </SnackbarProvider>
       </ThemeProvider>
-    </>
+    </div>
   );
 }
 
