@@ -4,6 +4,7 @@ const {
   signup,
   verifyEmail,
   login,
+  editUser,
   getUsers,
   getUser,
   getLoggedInUser,
@@ -22,14 +23,20 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(protect, authorize('Moderator', 'Admin'), advancedResult(User, 'User'), getUsers)
-  .post(signup);
+  .get(
+    protect,
+    authorize('Moderator', 'Admin'),
+    advancedResult(User, 'User'),
+    getUsers
+  )
+  .post(signup)
+  .put(protect, editUser);
 router.post('/verify-email/:token', verifyEmail);
 router.post('/reset-password/:token', resetPassword);
 router.post('/forgot-password', forgotPassword);
 router.post('/login', login);
 
-router.put('/:userId', protect, authorize( 'Admin'), updateUser);
+router.put('/:userId', protect, authorize('Admin'), updateUser);
 
 router.get('/logged-in-user', protect, getLoggedInUser);
 router.get('/get-signed-url', protect, getSignedUrl);

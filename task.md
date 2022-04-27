@@ -1,8 +1,3 @@
-# Profile
-
-- view profile
-- edit profile
-
 # Dashboard
 
 - libraries are listed

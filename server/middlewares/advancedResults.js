@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('../models/User');
 const cache = require('../utils/cache');
 const ErrorResponse = require('../utils/errorResponse');
 
@@ -133,7 +134,7 @@ const advancedResults = (model, resourceName) => async (req, res, next) => {
   const startIndex = parseInt(req.query._start, 10);
   const endIndex = parseInt(req.query._end, 10);
   const total = await model.countDocuments(queryStr);
-console.log(startIndex, 'sI')
+  console.log(startIndex, 'sI');
   query = query.skip(startIndex).limit(limit);
 
   // Executing query
@@ -144,13 +145,28 @@ console.log(startIndex, 'sI')
 
     // If resource been handled is Question, Transform each question category field from ids to readable names
     if (resourceName === 'Question') {
+      const userIds = results.map((res) => res.author.id);
       const categories = await cache.get('categories');
+      const users = await User.find({ _id: userIds }).select('username');
+
+      results = results.map((question) => {
+        const author = users.find(
+          (user) => user._id.toString() === question.author.id.toString()
+        );
+        if (author) {
+          question.author.username = author.username;
+        }
+
+        return question;
+      });
+
       results = results.map((question) => {
         if (question.category) {
           question.category = question.category.map(
             (catz) => categories.find((categori) => categori.key === catz).name
           );
         }
+
         question.id = question._id;
         console.log(question.category);
         // delete question._id;

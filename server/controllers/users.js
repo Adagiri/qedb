@@ -51,6 +51,19 @@ module.exports.updateUser = asyncHandler(async (req, res, next) => {
   res.status(403).json({});
 });
 
+module.exports.editUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      username: req.body.username,
+    },
+    { new: true }
+  );
+
+  user.id = user._id;
+  res.status(200).json(user);
+});
+
 module.exports.getLoggedInUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: req.user });
 });

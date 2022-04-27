@@ -1,33 +1,95 @@
-import { Typography } from '@mui/material';
+import { Typography, IconButton, Divider } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Cover from '../../Cover';
+import Navbar from '../../Navbar';
+import ContentCard from './id';
+import EditIcon from '@mui/icons-material/Edit';
+import Link from 'next/link';
+import Chip from '@mui/material/Chip';
+import MainLoader from '../../Loader/MainLoader';
+
 export default function Contribute() {
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const fetchContent = async () => {
     const userId = window.location.pathname.slice(9);
 
-    const user = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/${userId}`
-    );
+    try {
+      const user = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users/${userId}`
+      );
 
-    setUser(user.data);
-    
+      setUser(user.data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     fetchContent();
   }, []);
 
+  if (loading) {
+    return <MainLoader loading={true} />;
+  }
+
   return (
-    <Box>
-      <Typography>{user.username}</Typography>
-      <Typography>Email: {user.email}</Typography>
-      <Typography>Approved questions: {user.qapproved}</Typography>
-      <Typography>Pending questions: {user.qpending}</Typography>
-      <Typography>Role questions: {user.role}</Typography>
-    </Box>
+    <Cover>
+      <Box
+        sx={{
+          // backgroundColor: '#485461',
+          // backgroundImage: 'linear-gradient(315deg, #485461 0%, #28313b 74%)',
+          // color: '#fff',
+          height: '100%',
+          // minHeight: "100vh",
+          width: '100%',
+          padding: 3,
+        }}
+      >
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '95%',
+            justifyContent: 'space-around',
+            width: '100%',
+            alignItems: 'center',
+          }}
+        >
+          <Typography>
+            Username - <Chip color='primary' label={user.username} />{' '}
+          </Typography>
+          <Typography>
+            Email - <Chip color='primary' label={user.email} />
+          </Typography>
+          <Typography>
+            Approved resource -{' '}
+            <Chip
+              color='primary'
+              onClick={() => console.log('cliecked')}
+              label={user.qapproved}
+            />
+          </Typography>
+          <Typography>
+            Pending resource - <Chip color='primary' label={user.qpending} />
+          </Typography>
+          <Typography>
+            Role -{' '}
+            <Chip
+              color='primary'
+              onClick={() => console.log('cliecked')}
+              label={user.role}
+            />
+          </Typography>
+        </Box>
+      </Box>
+    </Cover>
   );
 }
 
