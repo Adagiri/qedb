@@ -1,10 +1,3 @@
-# Dashboard
-
-- libraries are listed
-  button to export library
-
-- library view
-  library can be exported
 
 # Api
 

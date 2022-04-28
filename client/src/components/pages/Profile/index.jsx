@@ -7,7 +7,6 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-  Button,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
@@ -35,6 +34,10 @@ export default function Contribute() {
   }, []);
 
   const editProfile = async () => {
+    if (!username) {
+      setEdit(false);
+      return;
+    }
     setLoading(true);
     try {
       const contentData = await axios({
@@ -50,7 +53,7 @@ export default function Contribute() {
       });
 
       setUser(contentData.data);
-           localStorage.setItem('user', JSON.stringify(contentData.data));
+      localStorage.setItem('user', JSON.stringify(contentData.data));
 
       setLoading(false);
       setEdit(false);

@@ -37,11 +37,29 @@ module.exports.getLibraries = asyncHandler(async (req, res, next) => {
 });
 
 module.exports.userLibraries = asyncHandler(async (req, res, next) => {
+  let libraries = await Library.find({ user: req.user.id }).select('_id -__v');
 
-  let libraries = await Library.find({user: req.user.id}).select('_id -__v');
+  const questionsId = [];
+
+  libraries.forEach((library) => {
+    questionsId.push(...library.questions);
+  });
+
+  const questions = await Question.find({ _id: questionsId }).select(
+    '-explanation -author'
+  );
 
   libraries = libraries.map((lib) => {
     lib.id = lib._id;
+    lib.questions = lib.questions
+      .map((question) => {
+        const content = questions.find(
+          (quest) => quest._id.toString() === question.toString()
+        );
+        return content ? content : undefined;
+      })
+      .filter((question) => question !== undefined);
+    console.log(lib);
     return lib;
   });
 

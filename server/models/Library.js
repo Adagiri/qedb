@@ -13,7 +13,7 @@ const librarySchema = new mongoose.Schema({
 
   title: { type: String, required: [true, 'Please add a title'] },
 
-  questions: [mongoose.ObjectId],
+  questions: {},
 
   content: [QuestionSchemaType],
 });

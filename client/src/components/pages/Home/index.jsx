@@ -9,7 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Chip, Grid, Paper, TextField, Typography } from '@mui/material';
 
 import Cover from '../../Cover';
 
@@ -195,7 +195,7 @@ export default function HomeComponent() {
                   color='error.dark'
                   component='P'
                 >
-                  {questionStats.approved || 0}{' '}
+                  <Chip color='primary' label={questionStats.approved || 0} />{' '}
                   <Typography variant='p' component='span' color='primary'>
                     approved resources
                   </Typography>{' '}
@@ -218,7 +218,6 @@ export default function HomeComponent() {
                     color='primary'
                     component='span'
                     fontWeight={600}
-               
                   >
                     Fetch{' '}
                   </Typography>

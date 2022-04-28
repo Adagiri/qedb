@@ -17,6 +17,7 @@ import Link from 'next/link';
 import PersonIcon from '@mui/icons-material/Person';
 import ContentModal from './ContentModal';
 
+
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const styles = (theme) => ({
