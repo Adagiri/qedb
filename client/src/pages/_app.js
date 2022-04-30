@@ -73,7 +73,9 @@ function MyApp(props) {
             style={{
               boxShadow: 'none',
               borderRadius: '100px',
-              background: '#93CBC1',
+              background: '#449788',
+              color: "#fff",
+              zIndex: 100,
             }}
             component={
               // <Fab color='primary' size='small' aria-label='scroll back to top'>

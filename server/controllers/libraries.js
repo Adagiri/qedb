@@ -37,7 +37,9 @@ module.exports.getLibraries = asyncHandler(async (req, res, next) => {
 });
 
 module.exports.userLibraries = asyncHandler(async (req, res, next) => {
-  let libraries = await Library.find({ user: req.user.id }).select('_id -__v');
+  let libraries = await Library.find({ user: req.user.id })
+    .select('_id -__v')
+    .sort({ _id: -1 });
 
   const questionsId = [];
 
@@ -96,4 +98,10 @@ module.exports.editLibrary = asyncHandler(async (req, res, next) => {
 
   library.id = library._id;
   res.status(200).json(library);
+});
+
+module.exports.deleteLibrary = asyncHandler(async (req, res, next) => {
+  const library = await Library.findByIdAndDelete(req.params.libraryId);
+
+  res.status(200).json({ success: true });
 });

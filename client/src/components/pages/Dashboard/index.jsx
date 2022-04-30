@@ -28,6 +28,7 @@ import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import MainLoader from '../../Loader/MainLoader';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -72,6 +73,33 @@ export default function DashboardPage(props) {
   const [loading, setLoading] = useState(true);
 
   const { enqueueSnackbar } = useSnackbar();
+
+  const handleDelete = async (library) => {
+    const id = library.id;
+    setLoading(true);
+    try {
+      const contentData = await axios({
+        method: 'DELETE',
+        url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/libraries/${id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+        },
+      });
+
+      console.log('deleteData', contentData);
+      if (contentData?.data?.success === true) {
+        const newLibraries = libraries.filter((library) => library._id !== id);
+
+        setLibraries(newLibraries);
+      }
+      // setLibraries(contentData.data);
+      setLoading(false);
+      enqueueSnackbar(library.title + ' deleted', {variant: "success"});
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   const handleDownload = (toDownload, title) => {
     // Fetch the questions
@@ -161,7 +189,7 @@ export default function DashboardPage(props) {
           Libraries
           <IconButton
             sx={{ color: '#fff', mb: 0.3, ml: 1, background: '#449788' }}
-            size='small'
+            size='medium'
           >
             <AddIcon
               fontSize='10px'
@@ -184,7 +212,11 @@ export default function DashboardPage(props) {
           {libraries.length > 0 ? (
             libraries.map((library) => {
               return (
-                <Card key={library._id} className={classes.root}>
+                <Card
+                  variant='outlined'
+                  key={library._id}
+                  className={classes.root}
+                >
                   <Box
                     sx={{
                       display: 'flex',
@@ -206,17 +238,26 @@ export default function DashboardPage(props) {
                         >
                           <Chip color='primary' label={library.title} />
                         </Typography>
-
-                        <Fab
-                          onClick={() =>
-                            handleDownload(library.questions, library.title)
-                          }
-                          color='error'
-                          size='small'
-                          aria-label='download'
-                        >
-                          <DownloadForOfflineIcon />
-                        </Fab>
+                        <Box sx={{ display: 'flex' }}>
+                          <Fab
+                            onClick={() => handleDelete(library)}
+                            color='error'
+                            size='small'
+                            sx={{ zIndex: 50, marginRight: '10px' }}
+                          >
+                            <DeleteOutlineIcon />
+                          </Fab>{' '}
+                          <Fab
+                            onClick={() =>
+                              handleDownload(library.questions, library.title)
+                            }
+                            color='primary'
+                            size='small'
+                            sx={{ zIndex: 50 }}
+                          >
+                            <DownloadForOfflineIcon />
+                          </Fab>
+                        </Box>
                       </CardContent>
                     </Box>
                   </Box>

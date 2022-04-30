@@ -17,7 +17,6 @@ import Link from 'next/link';
 import PersonIcon from '@mui/icons-material/Person';
 import ContentModal from './ContentModal';
 
-
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const styles = (theme) => ({
@@ -81,7 +80,7 @@ onchecking, remove the id from the list, oncheck, at the id again
 
   return (
     <>
-      <Card className={classes.root}>
+      <Card className={classes.root} variant='outlined'>
         <Box
           sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}
         >
@@ -91,6 +90,9 @@ onchecking, remove the id from the list, oncheck, at the id again
             disableFocusRipple
             onClick={handleCheck}
             size='small'
+            checked={
+              !!selected.find((question) => question._id === content._id)
+            }
             // sx={{fle }}
             {...label}
           />
@@ -130,8 +132,8 @@ onchecking, remove the id from the list, oncheck, at the id again
         {image && (
           <Box className={classes.imageBox}>
             <Image
-              src={'/test.png'}
-              // src={image}
+              // src={'/test.png'}
+              src={image}
               alt={category[0]}
               layout='fill'
               objectFit='cover'

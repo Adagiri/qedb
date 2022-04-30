@@ -241,9 +241,9 @@ export default function Content(props) {
       <Box width='100%' sx={{ position: 'relative' }} p={2}>
         <Fab
           color='primary'
-          size='small'
+          size='medium'
           aria-label='download'
-          sx={{ position: 'fixed', bottom: '100px', right: '40.5px', zIndex: 10 }}
+          sx={{ position: 'fixed', bottom: '37px', left: '66.5px', zIndex: 10 }}
           onClick={() => setFilterOpen(true)}
         >
           <ChangeCircleIcon />
@@ -299,7 +299,7 @@ export default function Content(props) {
             display: 'flex',
             flexDirection: 'column',
             position: 'fixed',
-            bottom: '40px',
+            bottom: '90px',
             left: '60px',
             width: '20px',
             zIndex: '5',
@@ -307,7 +307,7 @@ export default function Content(props) {
           }}
         >
           <Fab
-            color='error'
+            color='primary'
             onClick={() => {
               if (Object.keys(user).length === 0) {
                 router.push('/signin');
@@ -339,6 +339,7 @@ export default function Content(props) {
         <SaveQuestionsModal
           addQuestionModal={addQuestionModal}
           setAddQuestionModal={setAddQuestionModal}
+          setSelected={setSelected}
           selected={selected}
         />
       )}

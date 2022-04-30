@@ -1,4 +1,3 @@
-
 # Api
 
 - opentdb api page alike

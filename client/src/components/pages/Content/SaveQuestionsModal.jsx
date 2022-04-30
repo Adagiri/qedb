@@ -38,7 +38,7 @@ const stylet = {
 };
 
 function AddLibraryModal(props) {
-  const { selected, setAddQuestionModal } = props;
+  const { selected, setAddQuestionModal, setSelected } = props;
   const [open, setOpen] = useState(false);
   const [addLibraryLoading, setAddLibraryLoading] = useState(false);
   const [libraryName, setLibraryName] = useState('');
@@ -66,8 +66,8 @@ function AddLibraryModal(props) {
       setAddLibraryLoading(false);
       setAddQuestionModal(false);
       setOpen(false);
+      setSelected([]);
 
-      console.log(addLibraryResponse);
     } catch (error) {
       setAddLibraryLoading(false);
       enqueueSnackbar('Failed', { variant: 'error' });
@@ -148,7 +148,7 @@ function AddLibraryModal(props) {
 }
 
 export default function SaveQuestionsModal(props) {
-  const { setAddQuestionModal, addQuestionModal, selected } = props;
+  const { setAddQuestionModal, addQuestionModal, selected , setSelected} = props;
 
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -223,6 +223,7 @@ export default function SaveQuestionsModal(props) {
       setLoading(false);
 
       setAddQuestionModal(false);
+      setSelected([])
 
       console.log(editLibraryResponse);
     } catch (error) {
@@ -248,6 +249,7 @@ export default function SaveQuestionsModal(props) {
             <AddLibraryModal
               setAddQuestionModal={setAddQuestionModal}
               selected={selected}
+              setSelected={setSelected}
             />
           </Box>
 

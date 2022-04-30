@@ -15,7 +15,7 @@ import Cover from '../../Cover';
 import EditIcon from '@mui/icons-material/Edit';
 import { useSnackbar } from 'notistack';
 
-import Chip from '@mui/material/Chip';
+import Chip  from '@mui/material/Chip';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 export default function Contribute() {
@@ -98,25 +98,25 @@ export default function Contribute() {
           }}
         >
           <Typography>
-            Username - <Chip color='primary' label={user.username} />{' '}
+            Username - <Chip sx={{fontWeight: 600}} color='primary' label={user.username} />{' '}
           </Typography>
           <Typography>
-            Email - <Chip color='primary' label={user.email} />
+            Email - <Chip sx={{fontWeight: 600}} color='primary' label={user.email} />
           </Typography>
           <Typography>
             Approved resource -{' '}
-            <Chip
+            <Chip sx={{fontWeight: 600}}
               color='primary'
               onClick={() => console.log('cliecked')}
               label={user.qapproved}
             />
           </Typography>
           <Typography>
-            Pending resource - <Chip color='primary' label={user.qpending} />
+            Pending resource - <Chip sx={{fontWeight: 600}} color='primary' label={user.qpending} />
           </Typography>
           <Typography>
             Role -{' '}
-            <Chip
+            <Chip sx={{fontWeight: 600}}
               color='primary'
               onClick={() => console.log('cliecked')}
               label={user.role}

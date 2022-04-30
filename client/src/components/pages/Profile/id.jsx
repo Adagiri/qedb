@@ -63,25 +63,25 @@ export default function Contribute() {
           }}
         >
           <Typography>
-            Username - <Chip color='primary' label={user.username} />{' '}
+            Username - <Chip sx={{fontWeight: 600}} color='primary' label={user.username} />{' '}
           </Typography>
           <Typography>
-            Email - <Chip color='primary' label={user.email} />
+            Email - <Chip sx={{fontWeight: 600}} color='primary' label={user.email} />
           </Typography>
           <Typography>
             Approved resource -{' '}
-            <Chip
+            <Chip sx={{fontWeight: 600}}
               color='primary'
               onClick={() => console.log('cliecked')}
               label={user.qapproved}
             />
           </Typography>
           <Typography>
-            Pending resource - <Chip color='primary' label={user.qpending} />
+            Pending resource - <Chip sx={{fontWeight: 600}} color='primary' label={user.qpending} />
           </Typography>
           <Typography>
             Role -{' '}
-            <Chip
+            <Chip sx={{fontWeight: 600}}
               color='primary'
               onClick={() => console.log('cliecked')}
               label={user.role}
