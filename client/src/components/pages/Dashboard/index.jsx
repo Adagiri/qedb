@@ -95,7 +95,7 @@ export default function DashboardPage(props) {
       }
       // setLibraries(contentData.data);
       setLoading(false);
-      enqueueSnackbar(library.title + ' deleted', {variant: "success"});
+      enqueueSnackbar(library.title + ' deleted', { variant: 'success' });
     } catch (error) {
       setLoading(false);
     }
@@ -134,6 +134,7 @@ export default function DashboardPage(props) {
       docDefinition.content.push(...toAdd);
     });
     pdfMake.createPdf(docDefinition).download(title + '.pdf');
+    window.location.reload();
   };
 
   const CONTENT_PAGE_URL =
@@ -167,9 +168,9 @@ export default function DashboardPage(props) {
     }
   };
 
-  if (loading) {
-    return <MainLoader loader={true} />;
-  }
+  // if (loading) {
+  //   return <MainLoader loader={true} />;
+  // }
 
   return (
     <Box>

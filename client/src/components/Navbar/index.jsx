@@ -39,7 +39,7 @@ const pagesIcon = [
   <ShareIcon key='2' />,
   <GamesIcon key='3' />,
 ];
-const settings = ['profile',  'logout'];
+const settings = ['profile', 'logout'];
 const settingsIcon = [
   <AccountCircleIcon key='1' />,
   <DashboardIcon key='2' />,
@@ -74,7 +74,6 @@ const Navbar = () => {
     }
     setCurrentPath(path);
   }, []);
-
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -187,7 +186,13 @@ const Navbar = () => {
                 >
                   <Link
                     passHref
-                    href={page === 'home' ? '/' : `/${page.toLowerCase()}`}
+                    href={
+                      page === 'home'
+                        ? '/'
+                        : page === 'api'
+                        ? '/docs'
+                        : `/${page.toLowerCase()}`
+                    }
                   >
                     <MuiLink
                       sx={{
@@ -199,7 +204,7 @@ const Navbar = () => {
                       }}
                       variant='body2'
                     >
-                      {page}
+                      {page === 'api' ? page.toUpperCase() : page}
                     </MuiLink>
                   </Link>
                 </Button>
@@ -306,7 +311,9 @@ function NavDrawer({ navDrawer, setNavDrawer, toggleDrawer, user, setUser }) {
             <a style={{ textDecoration: 'none', color: 'inherit' }}>
               <ListItem button key={text}>
                 <ListItemIcon>{pagesIcon[index]}</ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText
+                  primary={text === 'api' ? text.toUpperCase() : text}
+                />
               </ListItem>
             </a>
           </Link>
