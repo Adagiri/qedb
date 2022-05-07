@@ -89,14 +89,14 @@ export default function DocsPage(props) {
         <Typography component='h3' variant='p' fontWeight={600} mb={2}>
           Qedb API
         </Typography>
-        <Typography mb={2}>
+        <Typography fontSize={15} mb={2}>
           The Open Trivia Database provides a completely free JSON API for use
           in programming projects. Use of this API does not require a API Key,
           just generate the URL below use it in your own application to retrieve
           trivia questions.
         </Typography>
 
-        <Typography mb={3}>
+        <Typography fontSize={13} mb={3}>
           All data provided by the API is available under the Creative Commons
           Attribution-ShareAlike 4.0 International License.
         </Typography>
@@ -114,6 +114,7 @@ export default function DocsPage(props) {
         </Typography>
 
         <TextField
+          select
           label='Number of Questions'
           variant='outlined'
           labelId='contribute-question-type-label'
@@ -121,7 +122,16 @@ export default function DocsPage(props) {
           size='medium'
           fullWidth
           sx={{ mb: 1 }}
-        />
+        >
+          <MenuItem value='5'>5</MenuItem>
+          <MenuItem value='10'>10</MenuItem>
+          <MenuItem value='20'>20</MenuItem>
+          <MenuItem value='30'>30</MenuItem>
+          <MenuItem value='40'>40</MenuItem>
+          <MenuItem value='50'>50</MenuItem>
+          <MenuItem value='60'>60</MenuItem>
+          <MenuItem value='100'>100</MenuItem>
+        </TextField>
 
         <FormControl sx={{ width: '100%', mb: 2 }}>
           <InputLabel sx={{ fontSize: '.9rem' }} id='multiple-category'>
@@ -178,6 +188,15 @@ export default function DocsPage(props) {
           <MenuItem value='medium'>Medium</MenuItem>
           <MenuItem value='hard'>Hard</MenuItem>
         </TextField>
+
+        <Button
+          variant='contained'
+          color='primary'
+          sx={{ fontWeight: 600, px: 5, py: 1.5, mb: 3 }}
+          fullWidth
+        >
+        Generate Link
+        </Button>
       </Box>
     </Cover>
   );
