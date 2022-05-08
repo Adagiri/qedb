@@ -192,7 +192,7 @@ export default function DocsPage(props) {
         <Button
           variant='contained'
           color='primary'
-          sx={{ fontWeight: 600, px: 5, py: 1.5, mb: 3 }}
+          sx={{ fontWeight: 600, px: 5, py: 1.5, my: 5, mt: 3 }}
           fullWidth
         >
         Generate Link
