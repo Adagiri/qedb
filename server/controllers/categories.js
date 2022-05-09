@@ -24,6 +24,17 @@ module.exports.getCategories = asyncHandler(async (req, res, next) => {
   res.status(200).json(categories);
 });
 
+module.exports.apiGetCategories = asyncHandler(async (req, res, next) => {
+  let categories = await Category.find().select('-_id -__v');
+
+  res.status(200).json(
+    categories.map((cat) => {
+      delete cat._id;
+      return cat;
+    })
+  );
+});
+
 module.exports.getCategory = asyncHandler(async (req, res, next) => {
   const categories = await cache.get('categories');
   let category = categories.find((catz) => catz.key === req.params.categoryKey);
@@ -68,7 +79,7 @@ module.exports.editCategory = asyncHandler(async (req, res, next) => {
   console.log(req.params.categoryKey);
 
   const category = await Category.findOneAndUpdate(
-  { key: req.params.categoryKey},
+    { key: req.params.categoryKey },
     update
   );
 

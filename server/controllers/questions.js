@@ -17,7 +17,11 @@ module.exports.apiGetQuestions = asyncHandler(async (req, res, next) => {
   // Check for invalid parameters
 
   if (query.amount && isNaN(query.amount)) {
-    return res.status(200).json({ response_code: 1, results: [] });
+    return res.status(200).json({
+      response_code: 2,
+      results: [],
+      message: `'amount' got invalid value: ${query.amount}`,
+    });
   }
 
   if (
@@ -25,7 +29,11 @@ module.exports.apiGetQuestions = asyncHandler(async (req, res, next) => {
     query.type !== 'boolean' &&
     query.type !== 'multiple_choice'
   ) {
-    return res.status(200).json({ response_code: 1, results: [] });
+    return res.status(200).json({
+      response_code: 2,
+      results: [],
+      message: `'type' got invalid value: ${query.type}`,
+    });
   }
 
   if (
@@ -34,11 +42,15 @@ module.exports.apiGetQuestions = asyncHandler(async (req, res, next) => {
     query.difficulty !== 'medium' &&
     query.difficulty !== 'hard'
   ) {
-    return res.status(200).json({ response_code: 1, results: [] });
+    return res.status(200).json({
+      response_code: 2,
+      results: [],
+      message: `'difficulty' got invalid value: ${query.difficulty}`,
+    });
   }
 
   const amount = parseInt(query.amount) <= 50 ? parseInt(query.amount) : 50;
-
+  const tokenKey = query.token;
   // Filter unaccepted query fields
   const acceptedFields = ['type', 'difficulty', 'category'];
 
@@ -52,11 +64,13 @@ module.exports.apiGetQuestions = asyncHandler(async (req, res, next) => {
   let questions = [];
 
   // Check that token exists and has not expired
-  if (req.headers.token) {
-    token = await Token.findOne({ token: req.headers.token });
+  if (tokenKey) {
+    token = await Token.findOne({ token: tokenKey });
 
     if (!token) {
-      return res.status(200).json({ response_code: 2, results: [] });
+      return res
+        .status(200)
+        .json({ response_code: 3, results: [], message: 'Token not found' });
     }
   }
 
@@ -84,7 +98,12 @@ module.exports.apiGetQuestions = asyncHandler(async (req, res, next) => {
   const categories = await cache.get('categories');
 
   if (!questions.length) {
-    return res.status(200).json({ response_code: 3, results: [] });
+    return res.status(200).json({
+      response_code: 0,
+      results: [],
+      message: `No more questions match your query`,
+      count: 0,
+    });
   }
 
   questions = questions.map((question) => {
@@ -98,7 +117,9 @@ module.exports.apiGetQuestions = asyncHandler(async (req, res, next) => {
     return question;
   });
 
-  res.status(200).json({ response_code: 0, results: questions });
+  res
+    .status(200)
+    .json({ response_code: 1, count: questions.length, results: questions });
 });
 
 // @desc      Get a single question

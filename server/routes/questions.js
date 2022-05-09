@@ -22,8 +22,10 @@ router
   .get(advancedResults(Question, 'Question'), getQuestions)
   .post(protect, addQuestion);
 
+// Qedb public api specific
+router.get('/public', apiGetQuestions);
+
 router.post('/public-add', protect, addQuestionPublic);
-router.get('/ui', apiGetQuestions);
 router.get('/question-stats', getQuestionsStats);
 router
   .route('/:questionId')

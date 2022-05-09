@@ -1,14 +1,10 @@
 const express = require('express');
-const { generateToken, resetToken } = require('../controllers/tokens');
+const { handleToken,  } = require('../controllers/tokens');
 
 const router = express.Router();
 
 router
-  .route('/')
-  .get(generateToken)
-
-  router.route('/:token').put(resetToken);
-
-// router.get('/:categoryId', getCategory);
+  .route('/public')
+  .get(handleToken)
 
 module.exports = router;
