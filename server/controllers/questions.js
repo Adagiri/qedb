@@ -82,9 +82,24 @@ module.exports.apiGetQuestions = asyncHandler(async (req, res, next) => {
   query.status = 'approved';
 
   // Get questions
-  questions = await Question.find(query)
-    .limit(amount)
-    .select('-author -status -_id -handledBy -createdAt -__v');
+
+  questions = await Question.aggregate([
+    { $match: query },
+    { $sample: { size: amount } },
+    {
+      $project: {
+        author: 0,
+        status: 0,
+        handledBy: 0,
+        createdAt: 0,
+        __v: 0,
+        _id: 0,
+      },
+    },
+  ]);
+  // questions = await Question.find(query)
+  //   .limit(amount)
+  //   .select('-author -status -_id -handledBy -createdAt -__v');
 
   // Update the token.questions field
   questions.length &&

@@ -14,6 +14,7 @@ import {
 import { useState, useEffect } from 'react';
 import Cover from '../../Cover';
 import Navbar from '../../Navbar';
+import { useSnackbar } from 'notistack';
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = 10;
@@ -32,11 +33,14 @@ const MenuProps = {
 };
 
 export default function DocsPage(props) {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState([]);
   const [catz, setCatz] = useState([]);
   const [type, setType] = useState('');
-  const [level, setLevel] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [amount, setAmount] = useState(50);
 
   useEffect(() => {
     fetchCategories();
@@ -47,11 +51,11 @@ export default function DocsPage(props) {
       target: { value },
     } = event;
 
-    console.log(value);
     setCategory(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     );
+    console.log(category);
   };
 
   const fetchCategories = async () => {
@@ -74,6 +78,31 @@ export default function DocsPage(props) {
 
       setCategories(categories.data.map((catz) => catz.name));
     }
+  };
+
+  const handleGenerateLink = () => {
+    let link = 'http://localhost:9000/api/v1/questions/public?';
+    // let link = 'https://server.qedb.net/api/v1/questions/public?';
+    amount && (link += 'amount=' + amount + '&');
+    category.length > 0 &&
+      (link +=
+        'category=' +
+        category
+          .map((cat) => catz.find((catee) => catee.name === cat).key)
+          .join(',') +
+        '&');
+    type && (link += 'type=' + type + '&');
+    difficulty && (link += 'difficulty=' + difficulty + '&');
+
+    navigator.clipboard.writeText(link);
+
+    enqueueSnackbar('Link generated and copied', {
+      variant: 'success',
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'center',
+      },
+    });
   };
 
   return (
@@ -122,6 +151,7 @@ export default function DocsPage(props) {
           size='medium'
           fullWidth
           sx={{ mb: 1 }}
+          onChange={(e) => setAmount(e.target.value)}
         >
           <MenuItem value='5'>5</MenuItem>
           <MenuItem value='10'>10</MenuItem>
@@ -167,11 +197,13 @@ export default function DocsPage(props) {
           labelId='contribute-question-type-label'
           id='contribute-question-type-label'
           size='medium'
+          onChange={(e) => setType(e.target.value)}
           fullWidth
           sx={{ mb: 1 }}
         >
           <MenuItem value='multiple_choice'>Multiple choice</MenuItem>
           <MenuItem value='boolean'>Boolean</MenuItem>
+          <MenuItem value=''>Any</MenuItem>
         </TextField>
 
         <TextField
@@ -181,12 +213,14 @@ export default function DocsPage(props) {
           labelId='contribute-question-type-label'
           id='contribute-question-type-label'
           size='medium'
+          onChange={(e) => setDifficulty(e.target.value)}
           fullWidth
           sx={{ mb: 1 }}
         >
           <MenuItem value='easy'>Easy</MenuItem>
           <MenuItem value='medium'>Medium</MenuItem>
           <MenuItem value='hard'>Hard</MenuItem>
+          <MenuItem value=''>Any</MenuItem>
         </TextField>
 
         <Button
@@ -194,8 +228,9 @@ export default function DocsPage(props) {
           color='primary'
           sx={{ fontWeight: 600, px: 5, py: 1.5, my: 5, mt: 3 }}
           fullWidth
+          onClick={() => handleGenerateLink()}
         >
-        Generate Link
+          Generate & Copy Link
         </Button>
       </Box>
     </Cover>
