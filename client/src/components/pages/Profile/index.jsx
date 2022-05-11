@@ -15,10 +15,15 @@ import Cover from '../../Cover';
 import EditIcon from '@mui/icons-material/Edit';
 import { useSnackbar } from 'notistack';
 
-import Chip  from '@mui/material/Chip';
+import Chip from '@mui/material/Chip';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { useRouter } from 'next/router';
+import { confirmLogin } from '../../../utils/auth';
+
 
 export default function Contribute() {
+  const router = useRouter();
+
   const [user, setUser] = useState({});
   const [edit, setEdit] = useState(false);
   const [username, setUsername] = useState('');
@@ -26,10 +31,14 @@ export default function Contribute() {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem('user'));
+    if (confirmLogin()) {
+      const savedUser = JSON.parse(localStorage.getItem('user'));
 
-    if (savedUser) {
-      setUser(savedUser);
+      if (savedUser) {
+        setUser(savedUser);
+      }
+    } else {
+      router.push('/signin');
     }
   }, []);
 
@@ -98,25 +107,38 @@ export default function Contribute() {
           }}
         >
           <Typography>
-            Username - <Chip sx={{fontWeight: 600}} color='primary' label={user.username} />{' '}
+            Username -{' '}
+            <Chip
+              sx={{ fontWeight: 600 }}
+              color='primary'
+              label={user.username}
+            />{' '}
           </Typography>
           <Typography>
-            Email - <Chip sx={{fontWeight: 600}} color='primary' label={user.email} />
+            Email -{' '}
+            <Chip sx={{ fontWeight: 600 }} color='primary' label={user.email} />
           </Typography>
           <Typography>
             Approved resource -{' '}
-            <Chip sx={{fontWeight: 600}}
+            <Chip
+              sx={{ fontWeight: 600 }}
               color='primary'
               onClick={() => console.log('cliecked')}
               label={user.qapproved}
             />
           </Typography>
           <Typography>
-            Pending resource - <Chip sx={{fontWeight: 600}} color='primary' label={user.qpending} />
+            Pending resource -{' '}
+            <Chip
+              sx={{ fontWeight: 600 }}
+              color='primary'
+              label={user.qpending}
+            />
           </Typography>
           <Typography>
             Role -{' '}
-            <Chip sx={{fontWeight: 600}}
+            <Chip
+              sx={{ fontWeight: 600 }}
               color='primary'
               onClick={() => console.log('cliecked')}
               label={user.role}

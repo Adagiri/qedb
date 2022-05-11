@@ -29,6 +29,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import MainLoader from '../../Loader/MainLoader';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { confirmLogin } from '../../../utils/auth';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -66,13 +67,22 @@ const styles = (theme) => ({
 });
 
 export default function DashboardPage(props) {
+  const router = useRouter();
+
   const useStyles = makeStyles(styles);
   const classes = useStyles(props);
-  const router = useRouter();
   const [libraries, setLibraries] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (!confirmLogin()) {
+      router.push('/signin');
+    } else {
+      fetchLibraries();
+    }
+  }, []);
 
   const handleDelete = async (library) => {
     const id = library.id;
@@ -139,9 +149,6 @@ export default function DashboardPage(props) {
 
   const CONTENT_PAGE_URL =
     '/content?select=text,type,difficulty,category,options,answer,image,author,credits,explanation&status=approved';
-  useEffect(() => {
-    fetchLibraries();
-  }, []);
 
   const fetchLibraries = async () => {
     try {
