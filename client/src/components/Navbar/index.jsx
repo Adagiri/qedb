@@ -306,7 +306,13 @@ function NavDrawer({ navDrawer, setNavDrawer, toggleDrawer, user, setUser }) {
           <Link
             key={text}
             passHref
-            href={text === 'home' ? '/' : `/${text.toLowerCase()}`}
+            href={
+              text === 'home'
+                ? '/'
+                : text === 'api'
+                ? 'docs'
+                : `/${text.toLowerCase()}`
+            }
           >
             <a style={{ textDecoration: 'none', color: 'inherit' }}>
               <ListItem button key={text}>

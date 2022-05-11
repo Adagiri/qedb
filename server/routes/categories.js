@@ -16,13 +16,13 @@ router
   .get(getCategories)
   .post(protect, authorize('Moderator', 'Admin'), addCategory);
 
+// Qedb public api specific
+router.get('/public', apiGetCategories);
+router.get('/public/:categoryKey', apiGetCategory);
+
 router
   .route('/:categoryKey')
   .get(getCategory)
   .put(protect, authorize('Moderator', 'Admin'), editCategory);
-
-// Qedb public api specific
-router.get('/public', apiGetCategories);
-router.get('/public/categoryKey', apiGetCategory);
 
 module.exports = router;

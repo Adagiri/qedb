@@ -41,6 +41,7 @@ export default function DocsPage(props) {
   const [type, setType] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [amount, setAmount] = useState(50);
+  const [documentation, setDocumentation] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -119,24 +120,191 @@ export default function DocsPage(props) {
           Qedb API
         </Typography>
         <Typography fontSize={15} mb={2}>
-          The Open Trivia Database provides a completely free JSON API for use
-          in programming projects. Use of this API does not require a API Key,
-          just generate the URL below use it in your own application to retrieve
-          trivia questions.
+          The{' '}
+          <Typography component='span' fontWeight={600} mb={2}>
+            Question Database
+          </Typography>{' '}
+          API consists of educational questions which are completely free for
+          use. The Apis returns data in form of JSON and it requires no api key.
+          Just generate the url below and hit it.
         </Typography>
 
-        <Typography fontSize={13} mb={3}>
+        {/* <Typography fontSize={13} mb={3}>
           All data provided by the API is available under the Creative Commons
           Attribution-ShareAlike 4.0 International License.
-        </Typography>
+        </Typography> */}
 
         <Button
           variant='contained'
           color='primary'
           sx={{ fontWeight: 600, px: 5, py: 1.5, mb: 3 }}
+          onClick={() => setDocumentation(!documentation)}
         >
           {'API ' + 'Documentation'}
         </Button>
+
+        {documentation && (
+          <>
+            <Typography component='h4' variant='p' fontWeight={600} my={2}>
+              Session Tokens
+            </Typography>
+            <Typography fontSize={15} mb={2}>
+              Session Tokens allows you to fetch questions from our database
+              without any question been returned more than once. In other words,
+              they make sure that there is no duplication of questions for all
+              api calls made with it. It should be noted that after a number of
+              api calls using the session token, the questions matching your
+              query will eventually be exhausted and will return no questions.
+              There is a response code that indicates this.
+            </Typography>
+            <Typography fontSize={13} fontWeight={600} mb={2}>
+              Session tokens will be deleted after 24 hours of inactivity.
+            </Typography>
+
+            <Box>
+              <Typography
+                color='primary'
+                fontSize={14}
+                fontWeight={600}
+                mb={0.5}
+              >
+                Use a session token
+              </Typography>
+              <TextField
+                // disabled
+                size='medium'
+                value={
+                  'https://server.qedb.net/api/v1/questions/public?amount=10&token=YOUR_TOKEN'
+                }
+                fullWidth
+                sx={{ mb: 2 }}
+              />
+              <Typography
+                color='primary'
+                fontSize={14}
+                fontWeight={600}
+                mb={0.5}
+              >
+                Create a session token
+              </Typography>
+              <TextField
+                // disabled
+                size='medium'
+                value={'https://server.qedb.net/api/tokens?action=create'}
+                fullWidth
+                sx={{ mb: 2 }}
+              />
+              <Typography
+                color='primary'
+                fontSize={14}
+                fontWeight={600}
+                mb={0.5}
+              >
+                Reset a session token
+              </Typography>
+              <TextField
+                // disabled
+                size='medium'
+                value={
+                  'https://server.qedb.net/api/tokens?action=reset&token=YOUR_TOKEN'
+                }
+                fullWidth
+                sx={{ mb: 2 }}
+              />
+              <Typography component='h4' variant='p' fontWeight={600} my={2}>
+                Responses
+              </Typography>
+              <Typography fontSize={15} mb={2}>
+                Responses (response_code) helps you understand the situation
+                after each call to the API.
+              </Typography>
+              <Typography component='li' fontSize={15} ml={2} mb={1}>
+                <Typography
+                  component='span'
+                  fontSize={14}
+                  fontWeight={600}
+                  mb={2}
+                >
+                  1
+                </Typography>{' '}
+                Indicates a successful response
+              </Typography>
+              <Typography component='li' fontSize={15} ml={2} mb={1}>
+                <Typography
+                  component='span'
+                  fontSize={14}
+                  fontWeight={600}
+                  mb={2}
+                >
+                  2
+                </Typography>{' '}
+                Indicates an invalid parameter passed in as a query. Example,
+                type=bouulean or amount=TEN or level=hardd
+              </Typography>
+              <Typography component='li' fontSize={15} ml={2} mb={1}>
+                <Typography
+                  component='span'
+                  fontSize={14}
+                  fontWeight={600}
+                  mb={2}
+                >
+                  3
+                </Typography>{' '}
+                Indicates that the token passed was not found. Either it has
+                been deleted or doesn't exist
+              </Typography>
+              <Typography component='li' fontSize={15} ml={2} mb={1}>
+                <Typography
+                  component='span'
+                  fontSize={14}
+                  fontWeight={600}
+                  mb={2}
+                >
+                  0
+                </Typography>{' '}
+                Indicates that there are no more results matching a query for a
+                certain token in use.
+              </Typography>
+
+              <Typography component='h4' variant='p' fontWeight={600} my={2}>
+                Helpers
+              </Typography>
+              <Typography
+                color='primary'
+                fontSize={14}
+                fontWeight={600}
+                mb={0.5}
+              >
+                Category lookup - Returns a list of all categories in the
+                database, including their keys
+              </Typography>
+              <TextField
+                // disabled
+                size='medium'
+                value={'https://server.qedb.net/api/v1/categories/public'}
+                fullWidth
+                sx={{ mb: 2 }}
+              />
+              <Typography
+                color='primary'
+                fontSize={14}
+                fontWeight={600}
+                mb={0.5}
+              >
+                Category count - Get the number of questions a category has
+              </Typography>
+              <TextField
+                // disabled
+                size='medium'
+                value={
+                  'https://server.qedb.net/api/v1/categories/public/CATEGORY_KEY'
+                }
+                fullWidth
+                sx={{ mb: 7 }}
+              />
+            </Box>
+          </>
+        )}
 
         <Typography mb={3} fontWeight={600}>
           API Helper

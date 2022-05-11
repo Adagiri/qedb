@@ -48,7 +48,7 @@ module.exports.apiGetCategory = asyncHandler(async (req, res, next) => {
   let category = categories.find((catz) => catz.key === req.params.categoryKey);
 
   const count = await Question.countDocuments({
-    category: req.params.categoryId,
+    category: req.params.categoryKey,
   });
 
   category = {
