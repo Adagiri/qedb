@@ -251,7 +251,7 @@ export default function DocsPage(props) {
                   3
                 </Typography>{' '}
                 Indicates that the token passed was not found. Either it has
-                been deleted or doesn't exist
+                been deleted or does not exist
               </Typography>
               <Typography component='li' fontSize={15} ml={2} mb={1}>
                 <Typography
