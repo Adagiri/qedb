@@ -82,8 +82,8 @@ export default function DocsPage(props) {
   };
 
   const handleGenerateLink = () => {
-    let link = 'http://localhost:9000/api/v1/questions/public?';
-    // let link = 'https://server.qedb.net/api/v1/questions/public?';
+    // let link = 'http://localhost:9000/api/v1/questions/public?';
+    let link = 'https://server.qedb.net/api/v1/questions/public?';
     amount && (link += 'amount=' + amount + '&');
     category.length > 0 &&
       (link +=
