@@ -190,7 +190,7 @@ export default function DocsPage(props) {
               <TextField
                 // disabled
                 size='medium'
-                value={'https://server.qedb.net/api/tokens?action=create'}
+                value={'https://server.qedb.net/api/v1/tokens/public?action=create'}
                 fullWidth
                 sx={{ mb: 2 }}
               />
@@ -206,7 +206,7 @@ export default function DocsPage(props) {
                 // disabled
                 size='medium'
                 value={
-                  'https://server.qedb.net/api/tokens?action=reset&token=YOUR_TOKEN'
+                  'https://server.qedb.net/api/v1/tokens/public?action=reset&token=YOUR_TOKEN'
                 }
                 fullWidth
                 sx={{ mb: 2 }}
